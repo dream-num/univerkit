@@ -14,9 +14,9 @@ univerkit 是一组基于 Univer 的开源应用组件，提炼自实际应用�
 也可以用脚本读写单元格、订阅变化；数据同步与公式计算由 Univer 完成。在应用中渲染页面从
 `@univerkit/html-view-renderer` 开始。
 
-- `@univerkit/binding-engine`
-- `@univerkit/html-view`
-- `@univerkit/html-view-renderer`
+- [`@univerkit/binding-engine`](./packages/binding-engine/README.zh-CN.md)
+- [`@univerkit/html-view`](./packages/html-view/README.zh-CN.md)
+- [`@univerkit/html-view-renderer`](./packages/html-view-renderer/README.zh-CN.md)
 
 ### 比较视图
 
@@ -24,7 +24,7 @@ univerkit 是一组基于 Univer 的开源应用组件，提炼自实际应用�
 
 - `@univerkit/unit-comparison-viewer`
 
-以上组件正在迁入，发布后会补上各包的文档链接。
+比较视图正在迁入，迁入后补上文档链接。
 
 ## 使用方式
 

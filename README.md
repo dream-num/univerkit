@@ -16,9 +16,9 @@ controls through HTML attributes, or read, write, and subscribe to cells from sc
 data sync and formula calculation. To render pages in an application, start with
 `@univerkit/html-view-renderer`.
 
-- `@univerkit/binding-engine`
-- `@univerkit/html-view`
-- `@univerkit/html-view-renderer`
+- [`@univerkit/binding-engine`](./packages/binding-engine/README.md)
+- [`@univerkit/html-view`](./packages/html-view/README.md)
+- [`@univerkit/html-view-renderer`](./packages/html-view-renderer/README.md)
 
 ### Comparison viewer
 
@@ -27,7 +27,7 @@ differences highlighted.
 
 - `@univerkit/unit-comparison-viewer`
 
-These components are being migrated; documentation links will be added once they are published.
+The comparison viewer is being migrated; its documentation link will be added then.
 
 ## Usage
 

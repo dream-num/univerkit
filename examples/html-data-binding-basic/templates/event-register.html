@@ -1,0 +1,74 @@
+<div class="registration-layout">
+  <section class="poster">
+    <div class="eyebrow">MEET IDEAS. BUILD TOGETHER.</div>
+    <h1>把灵感，<br />变成<span class="accent">下一步。</span></h1>
+    <p class="poster-description">
+      一场关于协同、AI 与创造的线下相聚。<br />带上你的好奇心，和开发者们一起动手。
+    </p>
+    <div class="orbit-art" aria-hidden="true">
+      <div class="orbit orbit-one"></div>
+      <div class="orbit orbit-two"></div>
+      <div class="orbit orbit-three"></div>
+      <span class="orbit-core">u<span>连接 · 共创</span></span
+      ><span class="orbit-dot"></span><span class="art-caption">IDEAS IN MOTION ↗</span>
+    </div>
+    <div class="poster-bottom"><span>01 / 一起创造</span><span>SHANGHAI, CN ↗</span></div>
+  </section>
+  <section class="registration-panel">
+    <div class="eyebrow">YOU'RE INVITED</div>
+    <h2 data-univer-cell-text="{{SETTINGS}}:B2">Univer 开发者沙龙</h2>
+    <div class="event-meta">
+      <p><span>时间</span><strong data-univer-cell-text="{{SETTINGS}}:B3"></strong></p>
+      <p><span>地点</span><strong data-univer-cell-text="{{SETTINGS}}:B4"></strong></p>
+    </div>
+    <div class="availability">
+      <span class="live-dot"></span><span>开放报名</span
+      ><span class="remaining"
+        >剩余 <strong id="remaining" data-univer-cell-text="{{SUMMARY}}:B6">—</strong> 个名额</span
+      >
+    </div>
+    <form id="registration-form">
+      <label for="name">你的姓名 <span>*</span></label
+      ><input
+        id="name"
+        name="name"
+        maxlength="30"
+        placeholder="怎么称呼你？"
+        autocomplete="name"
+        required
+      />
+      <label for="company">公司 / 团队 <span>*</span></label
+      ><input
+        id="company"
+        name="company"
+        maxlength="60"
+        placeholder="也可以填写「独立开发者」"
+        autocomplete="organization"
+        required
+      />
+      <label for="session">感兴趣的场次 <span>*</span></label
+      ><select
+        id="session"
+        data-univer-range-subscribe="{{SETTINGS}}:B6:B8"
+        name="session"
+        required
+      >
+        <option value="">正在加载场次…</option>
+      </select>
+      <button type="button" class="primary submit-button" id="submit-registration" disabled>
+        确认报名 <span>↗</span>
+      </button>
+      <p class="form-note">报名成功后，请保存报名编号，现场凭编号签到。</p>
+    </form>
+    <div id="registration-success" class="success-card" hidden tabindex="-1">
+      <div class="success-icon">✓</div>
+      <div class="eyebrow">SEE YOU THERE</div>
+      <h3>报名成功，现场见！</h3>
+      <p id="success-name"></p>
+      <div class="ticket-label">你的报名编号</div>
+      <strong id="ticket-id"></strong>
+      <p>请截图保存，抵达后向工作人员出示。</p>
+      <button type="button" class="secondary" id="register-another">为下一位报名</button>
+    </div>
+  </section>
+</div>

@@ -4,3 +4,10 @@ coverage/
 .DS_Store
 *.tsbuildinfo
 *.tgz
+.env
+.data/
+test-results/
+playwright-report/
+
+# Build intermediates
+packages/html-view-renderer/.generated/

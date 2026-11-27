@@ -1,0 +1,53 @@
+<section class="page-heading">
+  <div>
+    <div class="eyebrow">WELCOME DESK / 现场服务</div>
+    <h1>每一次相聚，<span class="muted">都有回应。</span></h1>
+    <p>
+      <span data-univer-cell-text="{{SETTINGS}}:B2"></span> <span class="separator">/</span>
+      <span data-univer-cell-text="{{SETTINGS}}:B3"></span>
+    </p>
+  </div>
+  <div class="desk-badge"><span class="live-dot"></span> 签到台已就绪</div>
+</section>
+<section class="stats-grid" aria-label="活动统计">
+  <article class="stat-card">
+    <span>报名人数</span><strong id="registered" data-univer-cell-text="{{SUMMARY}}:B2">—</strong
+    ><small>期待每一位到来</small>
+  </article>
+  <article class="stat-card highlighted">
+    <span>已签到</span><strong id="checked" data-univer-cell-text="{{SUMMARY}}:B3">—</strong
+    ><small>欢迎来到现场 ↗</small>
+  </article>
+  <article class="stat-card">
+    <span>未到场</span><strong id="absent" data-univer-cell-text="{{SUMMARY}}:B4">—</strong
+    ><small>为你留一个位置</small>
+  </article>
+  <article class="stat-card">
+    <span>签到率</span><strong id="rate" data-univer-cell-subscribe="{{SUMMARY}}:B5">—</strong
+    ><small>现场正在热起来</small>
+  </article>
+</section>
+<section class="attendee-section">
+  <div class="list-toolbar">
+    <div class="filter-tabs" role="group" aria-label="签到状态筛选">
+      <button type="button" data-filter="all" aria-pressed="true">全部人员</button
+      ><button type="button" data-filter="pending" aria-pressed="false">未到场</button
+      ><button type="button" data-filter="checked" aria-pressed="false">已签到</button>
+    </div>
+    <label class="search-label"
+      ><span>⌕</span
+      ><input
+        type="search"
+        id="search"
+        aria-label="搜索参会者"
+        placeholder="搜索姓名、报名编号或公司"
+    /></label>
+  </div>
+  <div class="list-caption"><span>参会者名单</span><span id="result-count">正在加载…</span></div>
+  <div
+    id="attendee-list"
+    data-univer-range-subscribe="{{ATTENDEES}}:A2:G81"
+    class="attendee-list"
+    aria-live="polite"
+  ></div>
+</section>
