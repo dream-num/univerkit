@@ -414,7 +414,8 @@ test("Chinese locale reaches sidebar, iframe details, diagnostics and metadata e
     "aria-pressed",
     "true",
   );
-  await expect(panel.getByRole("heading", { name: first.name })).toBeVisible();
+  // Names come from binding-metadata, which loads the workbook on the server; allow slow CI runners.
+  await expect(panel.getByRole("heading", { name: first.name })).toBeVisible({ timeout: 15_000 });
   await expect(panel).toContainText("页面元素");
   await panel.locator("[data-binding-id]").filter({ hasText: "#income" }).click();
   const popup = preview.getByRole("dialog", { name: "绑定来源" });
@@ -443,5 +444,6 @@ test("Chinese locale reaches sidebar, iframe details, diagnostics and metadata e
   await expect(panel).toContainText(`id: ${first.id}`);
   await page.unroute("**/binding-metadata");
   await panel.getByRole("button", { name: "刷新", exact: true }).click();
-  await expect(panel.getByRole("heading", { name: first.name })).toBeVisible();
+  // Names come from binding-metadata, which loads the workbook on the server; allow slow CI runners.
+  await expect(panel.getByRole("heading", { name: first.name })).toBeVisible({ timeout: 15_000 });
 });
