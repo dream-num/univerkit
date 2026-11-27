@@ -25,7 +25,7 @@ export async function inspectBudget(view: HtmlViewHandle) {
 ```
 
 Without `loadMetadata`, the UI displays `id: xxx`. Return the requested `unitId` and a `sheets` array;
-Unit and Sheet `name` fields are optional. A production application can query its authorized catalog or API.
+Unit and Sheet `name` fields are optional. A production application can query Unit names from its authorized catalog or API, and read sheet names directly from a loaded Binding Engine (`engine.getSheets()`).
 The sidebar, tooltip, and details show names without duplicate IDs. Missing or blank names fall back to
 `id: xxx`; failed lookups show a retry message and use the same fallback. Refresh retries failed lookups. Names are display-only;
 identity, grouping, positioning, and authorization do not depend on them.

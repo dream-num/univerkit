@@ -7,7 +7,6 @@ import {
   DEFAULT_WORKSHEET_COLUMN_COUNT,
   type IWorkbookData,
 } from "@univerjs/core";
-export { loadWorkbook as loadAiWorkbook } from "./workbook.js";
 import { parseCellReference, parseHtmlView } from "@univerkit/html-view";
 import type { AiEvent } from "../shared/ai.js";
 

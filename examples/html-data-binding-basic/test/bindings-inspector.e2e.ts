@@ -1,5 +1,8 @@
 import { expect, test, type APIRequestContext, type Page } from "@playwright/test";
 
+// Inspection reads each Sheet name from `GET /api/files/:id`; failing it makes names unavailable.
+const fileMetadata = /\/api\/files\/[^/?]+$/;
+
 async function fixture(page: Page, request: APIRequestContext) {
   const first = await (
     await request.post("/api/files", { data: { kind: "sheet", name: `Inspector A ${Date.now()}` } })
@@ -65,11 +68,12 @@ test("Unit cards isolate identical addresses and connect shared references to lo
   await expect(a.locator("h3")).toHaveText(first.name);
   await expect(b.locator("h3")).toHaveText(second.name);
   await expect(a.locator("h4")).toHaveText("Budget");
-  const metadata = await (await request.get(`/api/files/${first.id}/binding-metadata`)).json();
-  expect(metadata).toEqual({
+  // The Sheet name comes from the file API; sheet names come from the page's loaded Engine.
+  expect(await (await request.get(`/api/files/${first.id}`)).json()).toEqual({
     id: first.id,
     name: first.name,
-    sheets: [{ id: "sheet-1", name: "Budget" }],
+    kind: "sheet",
+    unitId: first.id,
   });
   await a.locator('[data-target="B3"]').click();
   await expect(a.locator('[data-binding-id][aria-pressed="true"]')).toHaveCount(3);
@@ -373,7 +377,7 @@ test("unavailable names use explicit ID fallbacks and selecting then deselecting
   page,
   request,
 }) => {
-  await page.route("**/binding-metadata", (route) =>
+  await page.route(fileMetadata, (route) =>
     route.fulfill({ status: 503, body: "private-id must not become UI text" }),
   );
   const { panel, preview, popup, first, second } = await fixture(page, request);
@@ -414,8 +418,7 @@ test("Chinese locale reaches sidebar, iframe details, diagnostics and metadata e
     "aria-pressed",
     "true",
   );
-  // Names come from binding-metadata, which loads the workbook on the server; allow slow CI runners.
-  await expect(panel.getByRole("heading", { name: first.name })).toBeVisible({ timeout: 15_000 });
+  await expect(panel.getByRole("heading", { name: first.name })).toBeVisible();
   await expect(panel).toContainText("页面元素");
   await panel.locator("[data-binding-id]").filter({ hasText: "#income" }).click();
   const popup = preview.getByRole("dialog", { name: "绑定来源" });
@@ -435,15 +438,12 @@ test("Chinese locale reaches sidebar, iframe details, diagnostics and metadata e
   await expect(popup).toContainText("无法解析数据引用。");
   await expect(popup).toContainText("引用格式应为");
   await expect(popup).not.toContainText("Expected");
-  await page.route("**/binding-metadata", (route) =>
-    route.fulfill({ status: 503, body: "unavailable" }),
-  );
+  await page.route(fileMetadata, (route) => route.fulfill({ status: 503, body: "unavailable" }));
   await page.getByRole("button", { name: "Bindings", exact: true }).click();
   await page.getByRole("button", { name: "Bindings", exact: true }).click();
   await expect(panel.locator(".binding-error")).toHaveText("部分名称暂不可用，请刷新重试。");
   await expect(panel).toContainText(`id: ${first.id}`);
-  await page.unroute("**/binding-metadata");
+  await page.unroute(fileMetadata);
   await panel.getByRole("button", { name: "刷新", exact: true }).click();
-  // Names come from binding-metadata, which loads the workbook on the server; allow slow CI runners.
-  await expect(panel.getByRole("heading", { name: first.name })).toBeVisible({ timeout: 15_000 });
+  await expect(panel.getByRole("heading", { name: first.name })).toBeVisible();
 });

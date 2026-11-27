@@ -25,7 +25,7 @@ export async function inspectBudget(view: HtmlViewHandle) {
 ```
 
 不提供 `loadMetadata` 时显示 `id: xxx`。函数必须返回请求的 `unitId` 及 `sheets` 列表，Unit 和 Sheet 的
-`name` 均可省略。生产应用可从已授权的目录或接口查询名称。侧栏、tooltip 和详情有名称时只显示名称，
+`name` 均可省略。生产应用可从已授权的目录或接口查询 Unit 名称；子表名可以直接从已加载的 Binding Engine 读取（`engine.getSheets()`）。侧栏、tooltip 和详情有名称时只显示名称，
 名称缺失或为空白时回退到 `id: xxx`；查询失败显示重试提示，并使用同一回退规则。
 面板的 Refresh 可重试失败查询。名称只用于展示，分组、定位和授权都不依赖名称。
 

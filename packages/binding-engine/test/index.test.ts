@@ -269,6 +269,13 @@ const rangeRef = {
   sheetId: "sheet",
   range: { startRow: 0, endRow: 1, startColumn: 0, endColumn: 2 },
 };
+it("lists sheets in tab order with current names and rejects access before loading", async () => {
+  const { engine } = setup();
+  expect(() => engine.getSheets()).toThrow();
+  await engine.load();
+  expect(engine.getSheets()).toEqual([{ sheetId: "sheet", name: "Sheet" }]);
+});
+
 it("reads range matrices with the same scalar semantics as individual cells", async () => {
   const { engine } = setup();
   await engine.load();

@@ -9,4 +9,5 @@ export type {
   InsertRowsWithValuesParams,
   RangeReference,
   RangeState,
+  SheetInfo,
 } from "./types.js";

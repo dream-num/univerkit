@@ -260,6 +260,10 @@ export interface CellReference {
   readonly row: number;
   readonly col: number;
 }
+export interface SheetInfo {
+  readonly sheetId: string;
+  readonly name: string;
+}
 export interface CellState {
   readonly value: CellValue | null;
 }
@@ -294,6 +298,7 @@ import type {
   RangeReference,
   RangeState,
   InsertRowsWithValuesParams,
+  SheetInfo,
 } from "@univerkit/binding-engine";
 
 // Signature summary; import BindingEngine from the package to construct it.
@@ -301,6 +306,7 @@ declare class BindingEngine implements IDisposable {
   constructor(options: BindingEngineOptions);
   readonly unitId: string;
   load(): Promise<void>;
+  getSheets(): readonly SheetInfo[];
   getCellState(reference: CellReference): CellState;
   subscribeCell(reference: CellReference, listener: (state: CellState) => void): IDisposable;
   getRangeState(reference: RangeReference): RangeState;
@@ -315,6 +321,8 @@ declare class BindingEngine implements IDisposable {
 ```
 
 `BindingEngineOptions` requires `unitId` and `collaborationClientConfig: IUniverCollaborationClientConfig`, and optionally accepts `createUniver: BindingUniverFactory`. All reference/state/option types above are exported by this package. `CellValue` reuses SDK `NonNullable<ICellData["v"]>`; `RangeReference` contains `sheetId` and `Readonly<IRange>`. `RangeState.value` is a readonly matrix of `CellValue | null`. Reads and local writes are synchronous; loading and saving return promises.
+
+`getSheets()` lists the loaded workbook's sheets in tab order as `{ sheetId, name }`, reading the current names on each call. Use it to show names for sheet IDs, for example in binding inspection.
 
 ## Univer factory
 

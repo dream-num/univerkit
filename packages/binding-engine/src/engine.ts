@@ -23,6 +23,7 @@ import type {
   InsertRowsWithValuesParams,
   RangeReference,
   RangeState,
+  SheetInfo,
 } from "./types.js";
 
 type Listener<T> = (value: T) => void;
@@ -89,6 +90,16 @@ export class BindingEngine implements IDisposable {
       this.dispose();
       throw error;
     }
+  }
+
+  /** Lists the workbook's sheets in tab order with their current names. */
+  getSheets(): readonly SheetInfo[] {
+    this.assertReady();
+    const workbook = this.instance.univerAPI.getWorkbook(this.unitId);
+    return (workbook?.getSheets() ?? []).map((sheet) => ({
+      sheetId: sheet.getSheetId(),
+      name: sheet.getSheetName(),
+    }));
   }
 
   getCellState(reference: CellReference): CellState {

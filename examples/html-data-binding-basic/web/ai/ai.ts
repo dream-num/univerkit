@@ -1,5 +1,5 @@
-import type { ExampleFile } from "../shared/files.js";
-import type { AiEvent, HtmlDraft } from "../shared/ai.js";
+import type { ExampleFile } from "../../shared/files.js";
+import type { AiEvent, HtmlDraft } from "../../shared/ai.js";
 import { createAiEventBuffer } from "./ai-event-buffer.js";
 
 export function setupAi(options: {

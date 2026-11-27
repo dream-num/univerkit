@@ -6,7 +6,8 @@ import { SQLiteDatabaseAdapter } from "@univerjs-pro/collaboration-database-sqli
 import { UniverCollabService } from "@univerjs-pro/collaboration-service";
 import { UniverType } from "@univerjs/protocol";
 import { LocaleType, type IWorkbookData } from "@univerjs/core";
-import { generateHtml, loadAiWorkbook, readSheetRange } from "../server/ai.js";
+import { generateHtml, readSheetRange } from "../server/ai.js";
+import { WorkbookReader } from "../server/workbook-reader.js";
 import type { AiEvent } from "../shared/ai.js";
 
 const workbook: IWorkbookData = {
@@ -54,7 +55,8 @@ describe("AI Sheet tools", () => {
         { type: UniverType.UNIVER_SHEET, data: workbook },
         { userID: "test" },
       );
-      const current = await loadAiWorkbook(service, { userID: "test" }, workbook.id);
+      const workbooks = new WorkbookReader(service, { userID: "test" });
+      const current = await workbooks.read(workbook.id).finally(() => workbooks.dispose());
       expect(readSheetRange(current, "data", "A1:D2")).toEqual({
         sheetId: "data",
         range: "A1:D2",

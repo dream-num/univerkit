@@ -1,4 +1,4 @@
-import { collaborationConfig } from "./config.js";
+import { collaborationConfig } from "../config.js";
 import { LocaleType, LogLevel } from "@univerjs/core";
 import { UniverCollaborationPlugin } from "@univerjs-pro/collaboration";
 import {

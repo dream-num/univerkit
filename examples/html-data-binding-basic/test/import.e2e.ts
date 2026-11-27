@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { ExchangeFormat, exportToBuffer } from "@univerjs-pro/exchange-node";
 import { UniverInstanceType } from "@univerjs/core";
 import { createSheetData } from "../server/templates.js";
@@ -26,7 +26,8 @@ test("imports XLSX from the sidebar, preserves sheets and formulas, and binds HT
   const chooser = page.waitForEvent("filechooser");
   await page.getByRole("button", { name: "Import spreadsheet" }).click();
   await (await chooser).setFiles({ name, mimeType: "application/octet-stream", buffer });
-  await expect(page.locator("#file-name")).toHaveText(name);
+  // The imported Sheet is named after the file, without its extension.
+  await expect(page.locator("#file-name")).toHaveText(name.replace(/\.xlsx$/, ""));
   await page.waitForFunction(() => !!(window as any).univerAPI);
   await expect(page.locator("#status")).toHaveText("All changes saved");
   const id = new URL(page.url()).searchParams.get("file")!;
@@ -69,60 +70,77 @@ test("imports XLSX from the sidebar, preserves sheets and formulas, and binds HT
   await view.close();
 });
 
+async function importFromSidebar(
+  page: Page,
+  file: { name: string; mimeType: string; buffer: Buffer },
+) {
+  await page.locator("#import-file").setInputFiles(file);
+}
+
 for (const [extension, separator] of [
   ["csv", ","],
   ["tsv", "\t"],
 ] as const) {
-  test(`imports ${extension.toUpperCase()} twice as independent Sheets`, async ({
-    page,
-    request,
-  }) => {
+  test(`imports ${extension.toUpperCase()} twice as independent Sheets`, async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("#status")).toHaveText("All changes saved");
     const ids: string[] = [];
     for (let i = 0; i < 2; i++) {
-      const response = await request.post("/api/files/import", {
-        multipart: {
-          file: {
-            name: `sales.${extension}`,
-            mimeType: "text/plain",
-            buffer: Buffer.from(`Region${separator}Sales\nEast${separator}42\n`),
-          },
-        },
+      const previous = page.url();
+      await importFromSidebar(page, {
+        name: `sales.${extension}`,
+        mimeType: "text/plain",
+        buffer: Buffer.from(`Region${separator}Sales\nEast${separator}42\n`),
       });
-      expect(response.status(), await response.text()).toBe(201);
-      ids.push((await response.json()).id);
+      await page.waitForURL((url) => url.href !== previous && url.searchParams.has("file"));
+      await expect(page.locator("#file-name")).toHaveText("sales");
+      await page.waitForFunction(() => !!(window as any).univerAPI);
+      ids.push(new URL(page.url()).searchParams.get("file")!);
+      expect(
+        await page.evaluate(() =>
+          (window as any).univerAPI
+            .getActiveWorkbook()
+            .getSheets()[0]
+            .getRange("A1:B2")
+            .getValues(),
+        ),
+      ).toEqual([
+        ["Region", "Sales"],
+        ["East", 42],
+      ]);
     }
     expect(ids[0]).not.toBe(ids[1]);
-    await page.goto(`/?file=${ids[0]}`);
-    await page.waitForFunction(() => !!(window as any).univerAPI);
-    expect(
-      await page.evaluate(() =>
-        (window as any).univerAPI.getActiveWorkbook().getSheets()[0].getRange("A1:B2").getValues(),
-      ),
-    ).toEqual([
-      ["Region", "Sales"],
-      ["East", 42],
-    ]);
   });
 }
 
-test("rejects invalid uploads without adding catalog entries", async ({ request }) => {
+test("rejects invalid uploads without adding catalog entries", async ({ page, request }) => {
+  await page.goto("/");
+  await expect(page.locator("#status")).toHaveText("All changes saved");
   const before = await (await request.get("/api/files")).json();
-  expect((await request.post("/api/files/import", { multipart: {} })).status()).toBe(400);
-  for (const [name, buffer, status] of [
-    ["notes.txt", Buffer.from("text"), 400],
-    ["empty.csv", Buffer.alloc(0), 400],
-    ["broken.xlsx", Buffer.from("not an Office file"), 422],
-    ["large.csv", Buffer.alloc(25 * 1024 * 1024 + 1, 65), 413],
+  for (const [name, buffer, message] of [
+    ["notes.txt", Buffer.from("text"), "Choose an XLS, XLSX, CSV, or TSV file."],
+    ["empty.csv", Buffer.alloc(0), "The selected file is empty."],
+    ["large.csv", Buffer.alloc(25 * 1024 * 1024 + 1, 65), "Choose a file smaller than 25 MiB."],
+    ["broken.xlsx", Buffer.from("not an Office file"), /./],
   ] as const) {
-    const response = await request.post("/api/files/import", {
-      multipart: {
-        file: { name, mimeType: "application/octet-stream", buffer },
-      },
-    });
-    expect(response.status(), await response.text()).toBe(status);
-    expect((await response.json()).error).toBeTruthy();
+    await importFromSidebar(page, { name, mimeType: "application/octet-stream", buffer });
+    await expect(page.locator("#error")).toHaveText(message);
+    await expect(page.locator("#import-sheet")).toBeEnabled();
   }
   expect(await (await request.get("/api/files")).json()).toEqual(before);
+});
+
+test("the File Endpoint rejects uploads over 25 MiB", async ({ request }) => {
+  const size = 25 * 1024 * 1024 + 1;
+  const response = await request.post(
+    `/universer-api/stream/file/upload?size=${size}&source=1&flate=false`,
+    {
+      multipart: {
+        file: { name: "large.csv", mimeType: "text/csv", buffer: Buffer.alloc(size, 65) },
+      },
+    },
+  );
+  expect(response.ok()).toBe(false);
 });
 
 test("keeps unsaved HTML source when importing", async ({ page, request }) => {

@@ -79,17 +79,17 @@ flowchart LR
 
 ## 文档导航
 
-| 目标                                               | 文档                                                                           |
-| -------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 加载、读写和订阅工作簿                             | [Binding Engine](../../binding-engine/README.zh-CN.md)                         |
-| 编写与校验 HTML 绑定声明                           | [HTML View](../../html-view/README.zh-CN.md)                                   |
-| 将模板渲染到应用容器                               | [Renderer](../README.zh-CN.md)、[完整集成](integration.zh-CN.md)               |
-| 查询 view 的参数、状态和生命周期                   | [renderHtmlView](render.zh-CN.md)                                              |
-| 使用内置检查面板、tooltip 与名称查询               | [绑定检查](binding-inspection.zh-CN.md)                                        |
-| 编写模板 JavaScript                                | [页面 API](javascript-api.zh-CN.md)                                            |
-| 了解 host / iframe / shared 的职责、通信和生命周期 | [架构](architecture.zh-CN.md)                                                  |
-| 了解 iframe 程序的构建方案与取舍                   | [iframe 程序构建决策](iframe-build.zh-CN.md)                                   |
-| 运行完整示例                                       | [html-data-binding-basic](../../../examples/html-data-binding-basic/README.md) |
+| 目标                                               | 文档                                                                                 |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| 加载、读写和订阅工作簿                             | [Binding Engine](../../binding-engine/README.zh-CN.md)                               |
+| 编写与校验 HTML 绑定声明                           | [HTML View](../../html-view/README.zh-CN.md)                                         |
+| 将模板渲染到应用容器                               | [Renderer](../README.zh-CN.md)、[完整集成](integration.zh-CN.md)                     |
+| 查询 view 的参数、状态和生命周期                   | [renderHtmlView](render.zh-CN.md)                                                    |
+| 使用内置检查面板、tooltip 与名称查询               | [绑定检查](binding-inspection.zh-CN.md)                                              |
+| 编写模板 JavaScript                                | [页面 API](javascript-api.zh-CN.md)                                                  |
+| 了解 host / iframe / shared 的职责、通信和生命周期 | [架构](architecture.zh-CN.md)                                                        |
+| 了解 iframe 程序的构建方案与取舍                   | [iframe 程序构建决策](iframe-build.zh-CN.md)                                         |
+| 运行完整示例                                       | [html-data-binding-basic](../../../examples/html-data-binding-basic/README.zh-CN.md) |
 
 ## 运行示例
 
@@ -103,7 +103,7 @@ pnpm --filter @univerkit/example-html-data-binding-basic start
 
 打开 <http://127.0.0.1:3030/>。默认包含 **Team budget** 表格和 **Team budget.univer.html** 页面。
 分别在两个标签页中打开它们，修改收入或支出，即可看到表格、公式结果和 HTML 柱状图同步更新。
-更多功能和开发方式见[示例说明](../../../examples/html-data-binding-basic/README.md)。
+更多功能和开发方式见[示例说明](../../../examples/html-data-binding-basic/README.zh-CN.md)。
 
 浏览器集成测试覆盖双向协同、图表更新、文件切换、保存和页面隔离：
 

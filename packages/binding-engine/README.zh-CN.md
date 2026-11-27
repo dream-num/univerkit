@@ -260,6 +260,10 @@ export interface CellReference {
   readonly row: number;
   readonly col: number;
 }
+export interface SheetInfo {
+  readonly sheetId: string;
+  readonly name: string;
+}
 export interface CellState {
   readonly value: CellValue | null;
 }
@@ -294,6 +298,7 @@ import type {
   RangeReference,
   RangeState,
   InsertRowsWithValuesParams,
+  SheetInfo,
 } from "@univerkit/binding-engine";
 
 // Signature summary; import BindingEngine from the package to construct it.
@@ -301,6 +306,7 @@ declare class BindingEngine implements IDisposable {
   constructor(options: BindingEngineOptions);
   readonly unitId: string;
   load(): Promise<void>;
+  getSheets(): readonly SheetInfo[];
   getCellState(reference: CellReference): CellState;
   subscribeCell(reference: CellReference, listener: (state: CellState) => void): IDisposable;
   getRangeState(reference: RangeReference): RangeState;
@@ -315,6 +321,8 @@ declare class BindingEngine implements IDisposable {
 ```
 
 `BindingEngineOptions` 必须提供 `unitId` 和 `collaborationClientConfig: IUniverCollaborationClientConfig`，可选传入 `createUniver: BindingUniverFactory`。上述引用、状态和选项类型均由本包导出。`CellValue` 复用 SDK 的 `NonNullable<ICellData["v"]>`；`RangeReference` 包含 `sheetId` 和 `Readonly<IRange>`，`RangeState.value` 是 `CellValue | null` 的只读矩阵。读取与本地写入同步执行，加载与保存返回 Promise。
+
+`getSheets()` 按标签顺序返回已加载工作簿的子表 `{ sheetId, name }`，每次调用都读取当前名称。可用它为子表 ID 显示名称，例如在绑定检查中。
 
 ## Univer 工厂
 

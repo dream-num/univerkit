@@ -17,6 +17,10 @@ export interface CellReference {
   readonly row: number;
   readonly col: number;
 }
+export interface SheetInfo {
+  readonly sheetId: string;
+  readonly name: string;
+}
 export interface CellState {
   readonly value: CellValue | null;
 }

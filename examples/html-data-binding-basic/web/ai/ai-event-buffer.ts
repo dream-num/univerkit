@@ -1,4 +1,4 @@
-import type { AiEvent } from "../shared/ai.js";
+import type { AiEvent } from "../../shared/ai.js";
 
 // Network chunks can arrive faster than the browser can lay out long text.
 // Keep event order, but render adjacent text deltas together at most 10 times/s.

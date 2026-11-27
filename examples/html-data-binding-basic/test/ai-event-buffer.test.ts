@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from "vitest";
-import { createAiEventBuffer } from "../web/ai-event-buffer.js";
+import { createAiEventBuffer } from "../web/ai/ai-event-buffer.js";
 
 afterEach(() => vi.useRealTimers());
 

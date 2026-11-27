@@ -1,11 +1,15 @@
-# 文件列表与协同示例
+# HTML data binding example
 
-使用三个数据绑定包和公开 Univer Collaboration SDK 组装的最小应用。
-支持 Sheet 与 `.univer.html` 文件，不实现登录或应用权限系统。
+English | [简体中文](./README.zh-CN.md)
 
-## 启动
+An example application built from the three HTML data binding packages and the Univer Collaboration
+SDK. It manages collaborative Sheets and `.univer.html` pages, and shows two-way sync between HTML
+pages and Sheets, binding inspection, spreadsheet import, and AI-generated pages. The example uses
+one fixed guest identity, with no login or permissions.
 
-在仓库根目录执行：
+## Start
+
+From the repository root, run:
 
 ```bash
 pnpm install
@@ -13,78 +17,111 @@ pnpm build
 pnpm --filter @univerkit/example-html-data-binding-basic start
 ```
 
-打开 <http://127.0.0.1:3030/>。点击 **Open in new tab** 可以在另一个标签页打开当前文件，
-也可以分别打开 Sheet 和引用它的 HTML 页面。
+Open <http://127.0.0.1:3030/>. Click **Open in new tab** to open the current file in another tab, or
+open a Sheet and an HTML page that references it side by side.
 
-首次启动会创建 **Team budget** 和 **Team budget.univer.html**。后续启动保留已有文件和修改，
-不会覆盖已有 HTML 源码。更新模板代码只影响新建的 HTML 文件。
+The first start creates the files below. Later starts keep existing files and edits; changes to the
+template code affect only new files.
 
-## 演示步骤
+| Sheet                        | HTML pages                         |
+| ---------------------------- | ---------------------------------- |
+| Team budget                  | Team budget.univer.html            |
+| 区域销售分析                 | 区域销售驾驶舱.univer.html         |
+| Univer 开发者沙龙 · 活动管理 | 活动报名, 现场签到台, 活动实时大屏 |
 
-1. 打开 **Team budget.univer.html**，修改 Income 或 Expenses。
-2. 在另一个标签页打开 **Team budget**，观察 B3/B4 和 B5 公式结果同步变化。
-3. 直接编辑 Sheet 的 B3/B4，HTML 控件、余额和 JavaScript 柱状图随之更新。
-4. 创建或导入另一个 Sheet，选中后点击右上角 **Generate HTML**，基于当前 Sheet 生成 HTML 页面。
-5. 预览并保存生成的页面，或点击 **HTML source** 编辑和保存已有页面的源码。
-6. 重启服务，再次打开文件，检查数据持久化。
+## Walkthrough
 
-点击 **Import spreadsheet** 可导入 XLS/XLSX/CSV/TSV 文件（最多 25 MiB）。导入期间显示进度提示，
-成功后在文件列表中新建并打开协同 Sheet；也可选择该 Sheet 生成 AI HTML 视图。
-转换使用公开的 `@univerjs-pro/exchange-node`，通过 Collaboration SDK 的
-`createUnitFromSnapshot()` 保存 snapshot 和 sheet blocks，与 collaboration examples 的
-exchange 示例使用相同流程。导入在本服务进程中执行，上传内容仅用于转换，Sheet 数据持久化到 SQLite。
+1. Open **Team budget.univer.html** and change Income or Expenses.
+2. Open **Team budget** in another tab and watch B3/B4 and the B5 formula result update.
+3. Edit B3/B4 in the Sheet; the HTML controls, balance, and JavaScript bar chart follow.
+4. Create or import another Sheet, select it, and click **Generate HTML** at the top right to
+   generate an HTML page from it.
+5. Preview and save the generated page, or click **HTML source** to edit and save an existing page.
+6. Restart the server and open the files again to check that the data persisted.
 
-模板通过 `data-univer-range-subscribe` 在图表元素上声明收入和支出的 B3:B4 范围，
-再用 `window.univerBinding.subscribeRangeById("chart", callback)` 接收更新，通过普通 JavaScript 更新 SVG 柱状图。
+The template declares the income and expense range B3:B4 on the chart element with
+`data-univer-range-subscribe`, receives updates through
+`window.univerBinding.subscribeRangeById("chart", callback)`, and redraws the SVG bar chart with
+plain JavaScript.
 
-HTML 源码是普通保存的文件，不是协同编辑的 Unit。页面引用的 Sheet 数据通过协同同步。
-修改源码后，需要先保存或放弃修改，再切换文件。
+HTML source is saved as an ordinary file, not a collaborative Unit; the Sheet data a page references
+syncs through collaboration. After editing the source, save or discard it before switching files.
 
-## 文件结构
+## Import spreadsheets
+
+Click **Import spreadsheet** to import an XLS, XLSX, CSV, or TSV file of up to 25 MiB. The page
+uploads the file to the File Endpoint, starts an Exchange import task, and polls it. When it
+finishes, the new Sheet appears in the file list and opens, named after the file without its
+extension.
+
+## Binding inspection
+
+Click **Bindings** to open the inspection sidebar. The SDK provides the sidebar, highlights, and
+popovers; the application supplies only names. The Sheet name comes from `GET /api/files/:id`, and
+sheet names come directly from the Binding Engine the page has loaded (`getSheets()`). The wiring is
+in [web/views/html.ts](web/views/html.ts); see
+[built-in inspector and interface boundaries](../../packages/html-view-renderer/docs/binding-inspection.md)
+for the API.
+
+The inspector is in English by default. Open `/?file=demo-budget-view&lang=zh-CN` for the Chinese
+sidebar and popovers. The example passes the query parameter to `renderHtmlView({ locale })`; the
+template content and application navigation are unaffected.
+
+## AI-generated pages
+
+Select a Sheet, click **Generate HTML**, and describe the page you want. The AI reads the Sheet's
+latest data and generates an HTML draft to preview before you save it. Before first use, enter a
+DeepSeek API Key in **AI settings**; the server stores it in `.env`. The server reads Sheets through
+one shared snapshot materializer: the first read starts its runtime, and later reads take
+milliseconds.
+
+## Code layout
 
 ```text
-server/main.ts       文件目录、HTTP 路由、SQLite 和协同服务装配
-server/import.ts     表格上传、Office 转换和协同 Sheet 创建
-server/templates.ts  初始 Sheet 数据与 HTML 图表模板
-shared/files.ts      Sheet / HTML 文件列表类型
-web/main.ts          文件列表、创建、切换与源码编辑
-web/collaboration.ts 协同 Sheet 编辑器
-web/config.ts        协同客户端配置
-web/html.ts          renderHtmlView、Engine 加载与内置检查的应用装配
-web/styles.css       示例外层界面样式
+server/main.ts            Server composition: storage, collaboration / File / Exchange Services, Endpoints, HTTP, lifecycle
+server/file-catalog.ts    File list: Sheets from Unit metadata, HTML pages in the application's own table
+server/file-routes.ts     File list, creation, and HTML source APIs
+server/ai-routes.ts       AI settings and page generation APIs
+server/workbook-reader.ts Reads the latest Sheet data on the server
+server/demo-files.ts      Seeded files
+server/*template.ts       Seeded Sheet data and HTML templates
+web/main.ts               Page state, file switching, source editing, and view modes
+web/api/                  File APIs and spreadsheet import
+web/views/                Collaborative Sheet editor and HTML pages
+web/ui/                   Create, import, and share UI
+web/ai/                   AI generation and settings UI
 ```
 
-文件名和 HTML 源码保存在 `.data/files.sqlite`；协同数据由 SDK Adapter 保存在
-`.data/collaboration.sqlite`。示例提供固定访客身份并放行 SDK 的权限查询，不管理用户或权限。
+Collaboration data, uploaded file records, and HTML pages share `.data/collaboration.sqlite`: Sheet
+names live in Unit metadata, and HTML pages in the application's own `html_views` table. Uploaded file
+contents are stored in `.data/files/`. When you stop the server (Ctrl+C), it releases the Endpoints,
+Services, and storage in dependency order.
 
-## 配置
+## Configuration
 
-需要自定义时，在本目录将 `.env.example` 复制为 `.env`。
+To customize, copy `.env.example` to `.env` in this directory.
 
-| 变量             | 默认值      | 用途                                     |
-| ---------------- | ----------- | ---------------------------------------- |
-| `HOST`           | `127.0.0.1` | 监听地址                                 |
-| `PORT`           | `3030`      | HTTP 与 WebSocket 端口                   |
-| `DATA_DIR`       | `.data`     | 文件目录和协同数据的位置                 |
-| `UNIVER_LICENSE` | 空          | 可选 Univer 许可证；修改后需重新构建前端 |
+| Variable            | Default                    | Purpose                                                         |
+| ------------------- | -------------------------- | --------------------------------------------------------------- |
+| `HOST`              | `127.0.0.1`                | Listening address                                               |
+| `PORT`              | `3030`                     | HTTP and WebSocket port                                         |
+| `DATA_DIR`          | `.data`                    | Where data files are stored                                     |
+| `UNIVER_LICENSE`    | empty                      | Optional Univer license; rebuild the frontend after changing it |
+| `DEEPSEEK_API_KEY`  | empty                      | API Key for AI generation; can also be set in AI settings       |
+| `DEEPSEEK_MODEL`    | `deepseek-flash`           | Model for AI generation                                         |
+| `DEEPSEEK_BASE_URL` | `https://api.deepseek.com` | AI API address                                                  |
 
-前端、HTTP API 和 WebSocket 由同一个服务提供。开发时 Vite 将 `/api` 和 `/universer-api`
-代理到 3030 端口。示例不依赖 Workspace 服务。
+One server provides the frontend, HTTP APIs, and WebSocket. During development, Vite proxies `/api`
+and `/universer-api` to port 3030.
 
-## 页面生命周期
+## Page lifecycle
 
-Sheet 编辑器与 HTML 宿主运行在不同页面中。Univer UI Facade 扩展作用于整个 JavaScript
-运行环境，因此通过文件导航隔离 UI 编辑器和 Headless Engine。
+The Sheet editor and HTML pages run in separate pages. Univer UI Facade extensions apply to the
+whole JavaScript realm, so file navigation keeps the UI editor and the Headless Engine apart.
 
-正常切换文件时，先提交 HTML 控件草稿并等待协同确认，再离开页面。保存失败时保留当前页面。
-浏览器关闭或刷新时，如有尚未保存的修改，则使用浏览器的离开提示。
+When you switch files, HTML control drafts are submitted and acknowledged by collaboration before
+the page is left; if saving fails, the current page stays. When you close or refresh the browser
+with unsaved changes, the browser's leave prompt appears.
 
-示例界面样式只作用于文件列表和外层工具栏，Sheet 使用 Univer SDK 默认样式。
-
-[内置 Inspector 与接口边界](../../packages/html-view-renderer/docs/binding-inspection.zh-CN.md)
-
-检查侧栏、高亮与浮层由 SDK 内置。应用负责文件目录、源码草稿、AI 生成及 Unit/Sheet 名称查询。渲染与检查接入位于 [web/html.ts](web/html.ts)。
-
-### 检查组件语言
-
-默认使用英文。打开 `/?file=demo-budget-view&lang=zh-CN` 可查看中文检查侧栏和浮层；`lang=en-US` 使用英文。示例将查询参数传给 `renderHtmlView({ locale })`，模板内容和应用导航不受影响。
+The example's styles apply only to the file list and outer toolbar; the Sheet uses the Univer SDK's
+default styles.
