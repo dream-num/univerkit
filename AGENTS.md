@@ -46,10 +46,10 @@ component fits here when it is:
 
 - Every README comes in an English `README.md` and Simplified Chinese `README.zh-CN.md` pair. Write
   and update documentation following [docs/documentation.md](./docs/documentation.md).
-- This file, the root `docs/`, code, identifiers, comments, commit messages, and PR titles are in
-  English.
+- This file, the root `docs/`, code, identifiers, comments, commit messages, and pull request titles
+  and descriptions are in English.
 
 ## Done
 
 A change is done when its documentation and changeset are updated, and `pnpm check` (format,
-typecheck, build) and `pnpm test` pass; CI runs the same two commands.
+build, typecheck) and `pnpm test` pass; CI runs the same two commands.

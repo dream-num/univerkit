@@ -10,7 +10,7 @@ Requires Node.js 24 or later and pnpm (the version is pinned in `package.json`).
 
 ```sh
 pnpm install
-pnpm check   # format, typecheck, build
+pnpm check   # format, build, typecheck
 pnpm test
 ```
 
@@ -18,7 +18,8 @@ Run `pnpm format` to fix formatting.
 
 ## Pull requests
 
-- Keep each pull request focused on one change, and write the title and commit messages in English.
+- Keep each pull request focused on one change, and write its title, description, and commit
+  messages in English.
 - Update the package documentation in the same pull request; see
   [docs/documentation.md](./docs/documentation.md).
 - Add a changeset for every user-facing change to a package by running `pnpm changeset`.
