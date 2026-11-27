@@ -1,0 +1,56 @@
+<section class="screen-heading">
+  <div class="eyebrow">UNIVER DEVELOPER MEETUP</div>
+  <h1>好奇的人，<span>正在相聚。</span></h1>
+  <p>
+    <span data-univer-cell-text="{{SETTINGS}}:B2"></span> <span class="separator">/</span>
+    <span data-univer-cell-text="{{SETTINGS}}:B4"></span>
+  </p>
+</section>
+<div class="screen-layout">
+  <section class="arrival-panel">
+    <div class="eyebrow"><span class="live-dot"></span> LIVE CHECK-IN</div>
+    <div class="arrival-count">
+      <strong id="checked" data-univer-cell-text="{{SUMMARY}}:B3">—</strong
+      ><span>位伙伴<br />已抵达现场</span>
+    </div>
+    <div class="arrival-progress">
+      <div id="overall-progress" data-univer-cell-subscribe="{{SUMMARY}}:B5"></div>
+    </div>
+    <div class="arrival-caption">
+      <span
+        >已报名 <b id="registered" data-univer-cell-text="{{SUMMARY}}:B2">—</b> 人 · 未到场
+        <b id="absent" data-univer-cell-text="{{SUMMARY}}:B4">—</b> 人</span
+      ><span>签到率 <b id="rate" data-univer-cell-subscribe="{{SUMMARY}}:B5">—</b></span>
+    </div>
+    <div
+      id="welcome"
+      data-univer-range-subscribe="{{ATTENDEES}}:A2:G81"
+      class="welcome"
+      aria-live="polite"
+    >
+      <span>✳</span>
+      <div>
+        <small>NICE TO SEE YOU</small>
+        <p id="welcome-text">每一个想法，都值得在这里相遇。</p>
+      </div>
+    </div>
+  </section>
+  <section class="session-panel">
+    <div class="panel-title">
+      <h2>找到你的同频伙伴</h2>
+      <span>场次到场进度</span>
+    </div>
+    <div id="session-progress" data-univer-range-subscribe="{{SUMMARY}}:A9:C11"></div>
+  </section>
+</div>
+<section class="recent-panel">
+  <div class="panel-title">
+    <h2><span class="live-dot"></span> 刚刚抵达</h2>
+    <span>每一次到来，都让现场更精彩</span>
+  </div>
+  <div
+    id="recent-arrivals"
+    data-univer-range-subscribe="{{ATTENDEES}}:A2:G81"
+    class="recent-arrivals"
+  ></div>
+</section>

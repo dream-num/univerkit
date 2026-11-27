@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>区域销售驾驶舱</title>
+    <!-- 页面样式；不依赖宿主页面的 CSS。 -->
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f3f5f2;
+        color: #173d36;
+        font:
+          14px/1.6 -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+      main {
+        max-width: 1320px;
+        margin: auto;
+        padding: 36px 40px 24px;
+      }
+      .eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.2em;
+        font-weight: 700;
+        color: #528177;
+      }
+      .masthead {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+        margin-bottom: 30px;
+      }
+      h1 {
+        font-size: 32px;
+        letter-spacing: -0.04em;
+        line-height: 1.25;
+        margin: 10px 0;
+      }
+      p {
+        color: #75847d;
+        margin: 6px 0;
+      }
+      .period {
+        border: 1px solid #d8e1db;
+        border-radius: 30px;
+        padding: 7px 14px;
+        color: #61776c;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        background: #173f35;
+        color: #fff;
+        padding: 24px 28px;
+        border-radius: 18px;
+      }
+      .toolbar .label {
+        font-size: 11px;
+        color: #b2c9bd;
+        letter-spacing: 0.14em;
+      }
+      .toolbar h2 {
+        margin: 4px 0 0;
+        font-size: 24px;
+        font-weight: 500;
+      }
+      .selector {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .selector label {
+        font-size: 13px;
+        color: #c9dbd1;
+      }
+      select {
+        border: 1px solid #527369;
+        border-radius: 8px;
+        background: #2b5246;
+        color: white;
+        font: inherit;
+        padding: 11px 40px 11px 16px;
+        cursor: pointer;
+      }
+      select:disabled {
+        opacity: 0.5;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin: 20px 0 24px;
+      }
+      .metric,
+      .panel {
+        background: white;
+        border: 1px solid #e1e7e1;
+        border-radius: 14px;
+      }
+      .metric {
+        padding: 23px;
+      }
+      .metric .name {
+        font-size: 12px;
+        color: #6b8175;
+      }
+      .metric strong {
+        display: block;
+        font-size: 30px;
+        font-weight: 600;
+        letter-spacing: -0.05em;
+        margin: 9px 0;
+      }
+      .metric small {
+        font-size: 11px;
+        color: #819088;
+      }
+      .metric:first-child {
+        background: #e5eee3;
+        border-color: #d6e2d2;
+      }
+      .charts {
+        display: grid;
+        grid-template-columns: 1.55fr 1fr;
+        gap: 20px;
+      }
+      .panel {
+        min-width: 0;
+        padding: 24px;
+      }
+      .panel-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 12px;
+      }
+      .panel h3 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .panel .description {
+        font-size: 11px;
+        margin-top: 3px;
+      }
+      .legend {
+        display: flex;
+        gap: 14px;
+        color: #75847d;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+      .legend span:before {
+        content: "";
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        margin-right: 6px;
+        background: #39846a;
+        border-radius: 50%;
+      }
+      .legend span:last-child:before {
+        background: #b3c3b0;
+      }
+      .chart {
+        height: 290px;
+        width: 100%;
+      }
+      .details {
+        margin-top: 20px;
+      }
+      .table-scroll {
+        overflow: auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 12px;
+        margin-top: 20px;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      th {
+        font-weight: 500;
+        color: #8a998e;
+        font-size: 11px;
+        background: #f8faf7;
+      }
+      td,
+      th {
+        padding: 13px 14px;
+        text-align: right;
+        border-bottom: 1px solid #edf1eb;
+      }
+      td:first-child,
+      th:first-child,
+      td:nth-child(2),
+      th:nth-child(2) {
+        text-align: left;
+      }
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      .tag {
+        display: inline-block;
+        font-size: 10px;
+        border-radius: 5px;
+        background: #eaf2e7;
+        padding: 3px 8px;
+        color: #628351;
+      }
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        color: #92a096;
+        font-size: 10px;
+        padding: 18px 2px;
+      }
+      #message {
+        color: #b42318;
+        font-size: 12px;
+      }
+      #message:empty {
+        display: none;
+      }
+      @media (max-width: 1050px) {
+        main {
+          padding: 24px;
+        }
+        .metrics {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .charts {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 560px) {
+        main {
+          padding: 18px 14px;
+        }
+        .masthead,
+        .toolbar {
+          align-items: start;
+          flex-direction: column;
+        }
+        h1 {
+          font-size: 27px;
+        }
+        .metric {
+          padding: 16px;
+        }
+        .metric strong {
+          font-size: 24px;
+        }
+        .panel {
+          padding: 16px;
+        }
+        .panel-heading {
+          flex-wrap: wrap;
+        }
+        .selector {
+          width: 100%;
+          justify-content: space-between;
+        }
+        .chart {
+          height: 260px;
+        }
+        footer {
+          flex-direction: column;
+          gap: 4px;
+        }
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@6.1.0/dist/echarts.min.js"></script>
+  </head>
+  <body>
+    <main>
+      <header class="masthead">
+        <div>
+          <div class="eyebrow">NORTHSTAR / SALES INTELLIGENCE</div>
+          <h1>区域销售驾驶舱</h1>
+          <p>从区域表现到每一笔增长，让经营数据触手可及。</p>
+        </div>
+        <div class="period">2026 年 1 — 6 月 · 半年度报告</div>
+      </header>
+      <!-- 单个输入单元格：选择区域写入「销售分析」B2，标题也绑定 B2。 -->
+      <section class="toolbar">
+        <div>
+          <div class="label">REGIONAL OVERVIEW</div>
+          <h2><span data-univer-cell-text="{{CELL_REFERENCE}}:B2">—</span> · 销售概览</h2>
+        </div>
+        <div class="selector">
+          <label for="region">查看区域</label
+          ><select id="region" data-univer-cell-model="{{CELL_REFERENCE}}:B2">
+            <option>华东</option>
+            <option>华南</option>
+            <option>华北</option>
+            <option>西部</option>
+          </select>
+        </div>
+      </section>
+      <div class="metrics">
+        <article class="metric">
+          <span class="name">累计销售额</span
+          ><strong id="revenue" data-univer-cell-subscribe="{{CELL_REFERENCE}}:B5">—</strong
+          ><small
+            >销售目标
+            <span id="target" data-univer-cell-subscribe="{{CELL_REFERENCE}}:B6">—</span></small
+          >
+        </article>
+        <article class="metric">
+          <span class="name">累计毛利</span
+          ><strong id="profit" data-univer-cell-subscribe="{{CELL_REFERENCE}}:B8">—</strong
+          ><small
+            >毛利率
+            <span id="margin" data-univer-cell-subscribe="{{CELL_REFERENCE}}:B9">—</span></small
+          >
+        </article>
+        <article class="metric">
+          <span class="name">目标达成率</span
+          ><strong id="attainment" data-univer-cell-subscribe="{{CELL_REFERENCE}}:B7">—</strong
+          ><small>当期销售额 / 当期销售目标</small>
+        </article>
+        <article class="metric">
+          <span class="name">成交订单</span
+          ><strong id="orders" data-univer-cell-subscribe="{{CELL_REFERENCE}}:B10">—</strong
+          ><small
+            >平均订单金额
+            <span id="average" data-univer-cell-subscribe="{{CELL_REFERENCE}}:B11">—</span></small
+          >
+        </article>
+      </div>
+      <div class="charts">
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <h3>销售趋势</h3>
+              <p class="description">月度销售额与目标 · 人民币</p>
+            </div>
+            <div class="legend"><span>销售额</span><span>销售目标</span></div>
+          </div>
+          <div
+            id="trend-chart"
+            data-univer-range-subscribe="{{CELL_REFERENCE}}:A15:C21"
+            class="chart"
+            role="img"
+            aria-label="所选区域月度销售趋势"
+          ></div>
+        </section>
+        <section class="panel">
+          <div class="panel-heading">
+            <div>
+              <h3>各区域表现</h3>
+              <p class="description">半年度销售额与目标 · 人民币</p>
+            </div>
+            <span class="tag">全部区域</span>
+          </div>
+          <div
+            id="region-chart"
+            data-univer-range-subscribe="{{CELL_REFERENCE}}:H15:J19"
+            class="chart"
+            role="img"
+            aria-label="各区域销售额与目标对比"
+          ></div>
+        </section>
+      </div>
+      <section class="panel details">
+        <div class="panel-heading">
+          <div>
+            <h3>区域销售明细</h3>
+            <p class="description">所选区域的月度经营记录</p>
+          </div>
+          <span class="tag">实时同步</span>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>月份</th>
+                <th>区域</th>
+                <th>销售额</th>
+                <th>销售目标</th>
+                <th>成本</th>
+                <th>订单数</th>
+                <th>毛利</th>
+              </tr>
+            </thead>
+            <tbody
+              id="detail-rows"
+              data-univer-range-subscribe="{{CELL_REFERENCE}}:A26:G31"
+            ></tbody>
+          </table>
+        </div>
+      </section>
+      <p id="message" role="alert"></p>
+      <footer>
+        <span>NORTHSTAR · REGIONAL SALES REPORT</span
+        ><span>数据与计算来自协同表格 · 切换区域即时更新</span>
+      </footer>
+    </main>
+    <script>
+      // 宿主创建文件时替换 Unit ID；所有引用都指向「销售分析」子表。
+      const unitId = "{{UNIT_ID}}";
+      const binding = window.univerBinding;
+      const showError = (error) => {
+        document.querySelector("#message").textContent = error.message;
+      };
+
+      // 这里只做显示格式化。汇总、比例、筛选均由 Sheet 公式计算。
+      const currency = new Intl.NumberFormat("zh-CN", {
+        style: "currency",
+        currency: "CNY",
+        maximumFractionDigits: 0,
+      });
+      const number = new Intl.NumberFormat("zh-CN");
+      const percent = new Intl.NumberFormat("zh-CN", {
+        style: "percent",
+        maximumFractionDigits: 1,
+      });
+      const compact = new Intl.NumberFormat("zh-CN", {
+        notation: "compact",
+        maximumFractionDigits: 0,
+      });
+      const display = (value, format) => (typeof value === "number" ? format.format(value) : "—");
+
+      // 1. 创建 ECharts 视图。CDN 加载失败时保留指标和明细展示。
+      if (!window.echarts) {
+        showError(new Error("图表库加载失败，请检查网络后刷新。"));
+      }
+      const trend = window.echarts?.init(document.querySelector("#trend-chart"), null, {
+        renderer: "svg",
+      });
+      const comparison = window.echarts?.init(document.querySelector("#region-chart"), null, {
+        renderer: "svg",
+      });
+      const axis = {
+        axisLine: { show: false },
+        axisTick: { show: false },
+        axisLabel: { color: "#8c9d92", fontSize: 10 },
+        splitLine: { lineStyle: { color: "#edf2ec", type: "dashed" } },
+      };
+      trend?.setOption({
+        animationDuration: 350,
+        color: ["#39846a", "#b3c3b0"],
+        tooltip: { trigger: "axis", valueFormatter: (value) => display(value, currency) },
+        grid: { left: 60, right: 20, top: 30, bottom: 32 },
+        xAxis: { ...axis, type: "category", boundaryGap: false },
+        yAxis: {
+          ...axis,
+          type: "value",
+          axisLabel: { ...axis.axisLabel, formatter: (value) => compact.format(value) },
+        },
+        series: [
+          {
+            name: "销售额",
+            type: "line",
+            smooth: true,
+            symbolSize: 7,
+            lineStyle: { width: 3 },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  { offset: 0, color: "#39846a30" },
+                  { offset: 1, color: "#39846a00" },
+                ],
+              },
+            },
+            encode: { x: "月份", y: "销售额" },
+          },
+          {
+            name: "销售目标",
+            type: "line",
+            smooth: true,
+            symbol: "none",
+            lineStyle: { type: "dashed", width: 2 },
+            encode: { x: "月份", y: "销售目标" },
+          },
+        ],
+      });
+      comparison?.setOption({
+        animationDuration: 350,
+        color: ["#39846a", "#dbe5d6"],
+        tooltip: {
+          trigger: "axis",
+          axisPointer: { type: "shadow" },
+          valueFormatter: (value) => display(value, currency),
+        },
+        grid: { left: 44, right: 22, top: 22, bottom: 32 },
+        xAxis: {
+          ...axis,
+          type: "value",
+          axisLabel: { ...axis.axisLabel, formatter: (value) => compact.format(value) },
+        },
+        yAxis: { ...axis, type: "category", inverse: true, splitLine: { show: false } },
+        series: [
+          {
+            name: "销售额",
+            type: "bar",
+            barWidth: 12,
+            itemStyle: { borderRadius: [0, 3, 3, 0] },
+            encode: { x: "销售额", y: "区域" },
+          },
+          {
+            name: "销售目标",
+            type: "bar",
+            barWidth: 5,
+            itemStyle: { borderRadius: [0, 3, 3, 0] },
+            encode: { x: "销售目标", y: "区域" },
+          },
+        ],
+      });
+
+      // 2. 按显示区域订阅。range 的坐标从 0 开始，包含首尾行列。
+      function subscribe(elementId, render) {
+        binding
+          .subscribeRangeById(elementId, ({ value }) => {
+            render(value);
+          })
+          .catch(showError);
+      }
+
+      // Each formatted metric declares its own cell on the HTML element.
+      for (const [id, format] of [
+        ["revenue", currency],
+        ["target", currency],
+        ["attainment", percent],
+        ["profit", currency],
+        ["margin", percent],
+        ["orders", number],
+        ["average", currency],
+      ]) {
+        binding
+          .subscribeCellById(id, ({ value }) => {
+            document.getElementById(id).textContent = display(value, format);
+          })
+          .catch(showError);
+      }
+
+      // A15:C21：SUMIFS 生成的月度趋势，第一行是字段名。
+      // ECharts dataset 直接使用 Sheet 返回的矩阵，不在页面聚合或筛选。
+      subscribe("trend-chart", (value) => {
+        trend?.setOption({ dataset: { source: value } });
+      });
+
+      // H15:J19：所有区域的销售额与目标，第一行是字段名。
+      subscribe("region-chart", (value) => {
+        comparison?.setOption({ dataset: { source: value } });
+      });
+
+      // A26:G31：Sheet 用 INDEX + FILTER 根据 B2 逐格提取明细。页面只创建表格元素。
+      subscribe("detail-rows", (value) => {
+        const rows = value.map((cells) => {
+          const row = document.createElement("tr");
+          cells.forEach((value, column) => {
+            const cell = document.createElement("td");
+            cell.textContent =
+              column < 2 ? value || "—" : display(value, column === 5 ? number : currency);
+            row.append(cell);
+          });
+          return row;
+        });
+        document.querySelector("#detail-rows").replaceChildren(...rows);
+      });
+
+      // 3. 跟随容器调整图表大小。页面关闭时，运行时自动释放数据订阅。
+      const resize = new ResizeObserver(() => {
+        trend?.resize();
+        comparison?.resize();
+      });
+      resize.observe(document.querySelector("#trend-chart"));
+      resize.observe(document.querySelector("#region-chart"));
+      window.addEventListener(
+        "pagehide",
+        () => {
+          resize.disconnect();
+          trend?.dispose();
+          comparison?.dispose();
+        },
+        { once: true },
+      );
+    </script>
+  </body>
+</html>

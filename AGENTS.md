@@ -18,7 +18,7 @@ component fits here when it is:
   through their public exports, and keep their code out of the build output.
 - Depend on published packages only. Applications depend on univerkit; univerkit never depends on an
   application.
-- Keep browser code and Node.js code in separate packages.
+- Keep Node.js-only code out of packages that run in the browser.
 - A package that depends on `@univerjs-pro/*` states in both READMEs that using it follows the
   [Univer license terms](https://docs.univer.ai/server/license).
 

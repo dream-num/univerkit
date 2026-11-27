@@ -1,0 +1,74 @@
+{
+  "name": "@univerkit/binding-engine",
+  "version": "1.0.0-rc.1",
+  "description": "Headless Univer cell reads, writes, subscriptions and collaboration lifecycle.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dream-num/univerkit.git",
+    "directory": "packages/binding-engine"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.zh-CN.md",
+    "docs",
+    "CHANGELOG.md"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://insider-npm-registry.univer.work/"
+  },
+  "scripts": {
+    "build": "pnpm run release:build",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "release:build": "node ../../scripts/package-build.mjs"
+  },
+  "devDependencies": {
+    "@univerjs-pro/collaboration": "^1.6.0",
+    "@univerjs-pro/collaboration-client": "^1.6.0",
+    "@univerjs-pro/engine-formula": "^1.6.0",
+    "@univerjs-pro/license": "^1.6.0",
+    "@univerjs/core": "^1.6.0",
+    "@univerjs/docs": "^1.6.0",
+    "@univerjs/engine-formula": "^1.6.0",
+    "@univerjs/engine-render": "^1.6.0",
+    "@univerjs/network": "^1.6.0",
+    "@univerjs/presets": "^1.6.0",
+    "@univerjs/sheets": "^1.6.0",
+    "@univerjs/sheets-formula": "^1.6.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.10"
+  },
+  "peerDependencies": {
+    "@univerjs-pro/collaboration": "^1.6.0",
+    "@univerjs-pro/collaboration-client": "^1.6.0",
+    "@univerjs-pro/engine-formula": "^1.6.0",
+    "@univerjs-pro/license": "^1.6.0",
+    "@univerjs/core": "^1.6.0",
+    "@univerjs/docs": "^1.6.0",
+    "@univerjs/engine-formula": "^1.6.0",
+    "@univerjs/engine-render": "^1.6.0",
+    "@univerjs/network": "^1.6.0",
+    "@univerjs/presets": "^1.6.0",
+    "@univerjs/sheets": "^1.6.0",
+    "@univerjs/sheets-formula": "^1.6.0"
+  }
+}

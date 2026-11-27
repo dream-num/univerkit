@@ -13,14 +13,18 @@
     "test": "pnpm -r test",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "check": "pnpm format:check && pnpm typecheck && pnpm build",
-    "changeset": "changeset"
+    "check": "pnpm format:check && pnpm build && pnpm typecheck",
+    "changeset": "changeset",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.3",
+    "@playwright/test": "1.58.2",
     "@types/node": "^24.0.0",
     "oxfmt": "0.66.0",
+    "rolldown-plugin-dts": "0.25.1",
     "typescript": "^5.9.3",
+    "vite": "^8.0.0",
     "vitest": "^4.1.10"
   },
   "engines": {

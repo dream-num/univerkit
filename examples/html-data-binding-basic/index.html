@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Univer Data Binding</title>
+  </head>
+  <body>
+    <div id="app">
+      <aside class="shell-ui">
+        <a class="brand" href="/"
+          >U<span>Univer<br /><small>Data Binding</small></span></a
+        >
+        <div class="sidebar-heading">
+          FILES <button id="refresh" aria-label="Refresh files" title="Refresh files">↻</button>
+        </div>
+        <nav id="files" aria-label="Files"></nav>
+        <div class="create-actions">
+          <button id="new-sheet">＋ New Sheet</button
+          ><button id="import-sheet">↑ Import spreadsheet</button
+          ><input id="import-file" type="file" accept=".xls,.xlsx,.csv,.tsv" hidden /><small
+            id="import-status"
+            role="status"
+            hidden
+          ></small>
+        </div>
+        <button id="ai-settings">AI settings</button>
+        <footer>
+          <span class="dot"></span>Shared collaboration example<br /><small
+            >No login required</small
+          >
+        </footer>
+      </aside>
+      <main>
+        <header class="shell-ui">
+          <div>
+            <span id="file-kind" class="eyebrow">UNIVER DATA BINDING</span>
+            <h1 id="file-name">Choose a file</h1>
+          </div>
+          <div class="header-actions">
+            <span id="status" role="status">Ready</span
+            ><a id="open-tab" target="_blank" rel="noopener">Open in new tab ↗</a
+            ><button id="generate-html" hidden>✦ Generate HTML</button>
+          </div>
+        </header>
+        <div id="error" role="alert" hidden></div>
+        <div id="html-toolbar" class="shell-ui" hidden>
+          <button id="preview-tab" class="active">Preview</button
+          ><button id="source-tab">HTML source</button
+          ><button id="bindings-tab" aria-pressed="false">Bindings</button
+          ><button id="save-source" hidden>Save HTML</button
+          ><button id="discard-source" hidden>Discard edits</button
+          ><button id="save-draft" hidden>Save as HTML file</button
+          ><button id="discard-draft" hidden>Discard draft</button>
+          <div class="presentation-actions">
+            <button id="enter-immersive">Immersive view</button
+            ><button id="share-html">Share</button>
+          </div>
+        </div>
+        <section id="content">
+          <div class="empty">Choose a Sheet or HTML view from the file list.</div>
+        </section>
+      </main>
+    </div>
+    <div id="immersive-controls" class="shell-ui" hidden aria-label="View controls">
+      <button id="exit-immersive">Exit immersive view</button
+      ><button id="share-immersive">Share</button>
+    </div>
+    <dialog id="share-dialog" class="shell-ui" aria-labelledby="share-title">
+      <h2 id="share-title">Share HTML view</h2>
+      <p id="share-name"></p>
+      <label for="share-link">Link to immersive view</label
+      ><input id="share-link" readonly spellcheck="false" />
+      <p id="share-hint"></p>
+      <p id="share-status" role="status" aria-live="polite"></p>
+      <div class="dialog-actions">
+        <button id="close-share">Close</button><button id="copy-share">Copy link</button>
+      </div>
+    </dialog>
+    <dialog id="create-dialog" class="shell-ui">
+      <form id="create-form">
+        <h2>New Sheet</h2>
+        <label>Name<input name="name" required autocomplete="off" /></label>
+        <p id="create-error" role="alert"></p>
+        <div class="dialog-actions">
+          <button type="button" id="cancel-create">Cancel</button
+          ><button type="submit">Create</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="ai-dialog" class="shell-ui" aria-labelledby="ai-title">
+      <form id="ai-form">
+        <h2 id="ai-title">Generate an HTML view</h2>
+        <p class="ai-description">
+          AI reads the selected Sheet's current values and formulas to build a connected view.
+        </p>
+        <div class="ai-fields">
+          <label
+            >Name<input name="name" placeholder="由 AI 生成，可自行修改" autocomplete="off"
+          /></label>
+          <label>Source Sheet<input id="ai-source-name" readonly /></label>
+          <input type="hidden" name="sourceUnitId" />
+        </div>
+        <label
+          >Describe your view<textarea
+            name="prompt"
+            rows="4"
+            required
+            placeholder="描述页面的用途、要展示的数据和需要支持的操作，也可以说明布局与视觉风格。"
+          ></textarea>
+        </label>
+        <section id="ai-progress" hidden aria-label="生成进度">
+          <div class="ai-progress-heading">
+            <span class="ai-activity" aria-hidden="true"></span>
+            <p id="ai-status" role="status"></p>
+            <span id="ai-elapsed"></span>
+          </div>
+          <p id="ai-waiting" hidden></p>
+          <ol id="ai-steps" aria-label="AI 执行过程"></ol>
+        </section>
+        <textarea
+          id="ai-output"
+          aria-label="Generated HTML"
+          readonly
+          spellcheck="false"
+          hidden
+        ></textarea>
+        <p id="ai-error" role="alert"></p>
+        <button type="button" id="ai-open-settings" hidden>Open AI settings</button>
+        <div class="dialog-actions">
+          <button type="button" id="ai-cancel">Close</button>
+          <button type="submit">Generate</button>
+          <button type="button" id="ai-preview" hidden>Preview HTML</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="ai-settings-dialog" class="shell-ui" aria-labelledby="ai-settings-title">
+      <form id="ai-settings-form">
+        <h2 id="ai-settings-title">AI settings</h2>
+        <p>
+          DeepSeek API Key is saved to this server’s .env and shared by everyone using this example.
+        </p>
+        <p id="ai-key-status" role="status"></p>
+        <label
+          >API Key<input
+            name="apiKey"
+            type="password"
+            required
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Enter a new API Key"
+        /></label>
+        <p id="ai-settings-error" role="alert"></p>
+        <div class="dialog-actions">
+          <button type="button" id="ai-settings-close">Close</button>
+          <button type="button" id="ai-key-clear">Clear API Key</button>
+          <button type="submit">Save API Key</button>
+        </div>
+      </form>
+    </dialog>
+    <script type="module" src="/web/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,75 @@
+{
+  "name": "@univerkit/html-view-renderer",
+  "version": "1.0.0-rc.1",
+  "description": "Isolated HTML runtime and asynchronous Univer data binding client.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dream-num/univerkit.git",
+    "directory": "packages/html-view-renderer"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.zh-CN.md",
+    "docs",
+    "CHANGELOG.md"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./dom": {
+      "import": {
+        "types": "./dist/dom.d.ts",
+        "default": "./dist/dom.js"
+      },
+      "require": {
+        "types": "./dist/dom.d.cts",
+        "default": "./dist/dom.cjs"
+      }
+    },
+    "./render": {
+      "import": {
+        "types": "./dist/render.d.ts",
+        "default": "./dist/render.js"
+      },
+      "require": {
+        "types": "./dist/render.d.cts",
+        "default": "./dist/render.cjs"
+      }
+    }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://insider-npm-registry.univer.work/"
+  },
+  "scripts": {
+    "build": "pnpm run release:build",
+    "typecheck": "tsc --noEmit",
+    "test": "pnpm run build:iframe && node --test scripts/build.test.mjs && vitest run test/",
+    "release:build": "node scripts/build.mjs",
+    "build:iframe": "node scripts/build.mjs --iframe-only"
+  },
+  "dependencies": {
+    "@univerkit/binding-engine": "workspace:*",
+    "@univerkit/html-view": "workspace:*"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.10"
+  }
+}
