@@ -8,8 +8,6 @@ The package consumes a comparison result and decoded left/right `unitData` snaps
 
 ![Side-by-side Sheet comparison showing the collapsible diff tree, row-insertion gap alignment, and inline formula diff](./docs/images/sheet-comparison.png)
 
-For a runnable standalone demo using Tailwind CSS v4 and `@univerjs/preset-sheets-core`, see [examples/unit-comparison-viewer-basic](../../examples/unit-comparison-viewer-basic/README.md).
-
 ## Responsibilities and boundaries
 
 | Layer                               | Responsibility                                                                                                                                                                           |
@@ -222,4 +220,4 @@ ES modules (`dist/index.js` with lazy chunks under `dist/chunks/`), TypeScript d
 
 ## License
 
-Licensed under [Apache-2.0](../../LICENSE). This package depends on Univer Pro (`@univerjs-pro/*`); using it follows the [Univer license terms](https://docs.univer.ai/server/license). Third-party dependencies retain their own licenses.
+Licensed under Apache-2.0. This package depends on Univer Pro (`@univerjs-pro/*`); using it follows the [Univer license terms](https://docs.univer.ai/server/license). Third-party dependencies retain their own licenses.

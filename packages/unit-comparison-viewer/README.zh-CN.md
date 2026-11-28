@@ -8,8 +8,6 @@
 
 ![只读双栏 Sheet 比对视图：可折叠差异树、插入行对齐空隙与行内公式差异](./docs/images/sheet-comparison.png)
 
-如需直接运行包含 Tailwind CSS v4 与 `@univerjs/preset-sheets-core` 的完整前端示例，见 [examples/unit-comparison-viewer-basic](../../examples/unit-comparison-viewer-basic/README.zh-CN.md)。
-
 ## 职责与边界
 
 | 层级                                | 职责                                                                                                                    |
@@ -221,4 +219,4 @@ npm 包包含 ES 模块产物（`dist/index.js` 及 `dist/chunks/` 下的懒加�
 
 ## 许可证
 
-以 [Apache-2.0](../../LICENSE) 许可发布。本包依赖 Univer Pro（`@univerjs-pro/*`），使用时需遵循 [Univer 许可规则](https://docs.univer.ai/zh-CN/server/license)。第三方依赖保留其各自许可证。
+以 Apache-2.0 许可发布。本包依赖 Univer Pro（`@univerjs-pro/*`），使用时需遵循 [Univer 许可规则](https://docs.univer.ai/zh-CN/server/license)。第三方依赖保留其各自许可证。

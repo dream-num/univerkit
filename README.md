@@ -19,6 +19,7 @@ data sync and formula calculation. To render pages in an application, start with
 - [`@univerkit/binding-engine`](./packages/binding-engine/README.md)
 - [`@univerkit/html-view`](./packages/html-view/README.md)
 - [`@univerkit/html-view-renderer`](./packages/html-view-renderer/README.md)
+- Example: [`html-data-binding-basic`](./examples/html-data-binding-basic/README.md)
 
 ### Comparison viewer
 
@@ -26,6 +27,7 @@ Compare two versions of a Sheet, Doc, Slide, Base, or Board side by side, read-o
 differences highlighted.
 
 - [`@univerkit/unit-comparison-viewer`](./packages/unit-comparison-viewer/README.md)
+- Example: [`unit-comparison-viewer-basic`](./examples/unit-comparison-viewer-basic/README.md)
 
 ## Usage
 
