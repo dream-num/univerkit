@@ -25,9 +25,7 @@ data sync and formula calculation. To render pages in an application, start with
 Compare two versions of a Sheet, Doc, Slide, Base, or Board side by side, read-only, with the
 differences highlighted.
 
-- `@univerkit/unit-comparison-viewer`
-
-The comparison viewer is being migrated; its documentation link will be added then.
+- [`@univerkit/unit-comparison-viewer`](./packages/unit-comparison-viewer/README.md)
 
 ## Usage
 
