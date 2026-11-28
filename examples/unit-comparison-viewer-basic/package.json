@@ -1,0 +1,53 @@
+{
+  "name": "@univerkit/example-unit-comparison-viewer-basic",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "dev": "vite",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "@univerjs-pro/bases": "^1.6.0",
+    "@univerjs-pro/boards": "^1.6.0",
+    "@univerjs-pro/boards-ui": "^1.6.0",
+    "@univerjs-pro/edit-history-ui": "^1.6.0",
+    "@univerjs-pro/sheets-history": "^1.6.0",
+    "@univerjs-pro/slides": "^1.6.0",
+    "@univerjs-pro/slides-ui": "^1.6.0",
+    "@univerjs/core": "^1.6.0",
+    "@univerjs/docs-ui": "^1.6.0",
+    "@univerjs/drawing": "^1.6.0",
+    "@univerjs/engine-formula": "^1.6.0",
+    "@univerjs/engine-render": "^1.6.0",
+    "@univerjs/preset-sheets-core": "^1.6.0",
+    "@univerjs/presets": "^1.6.0",
+    "@univerjs/sheets": "^1.6.0",
+    "@univerjs/sheets-conditional-formatting": "^1.6.0",
+    "@univerjs/sheets-filter": "^1.6.0",
+    "@univerjs/sheets-formula": "^1.6.0",
+    "@univerjs/sheets-numfmt": "^1.6.0",
+    "@univerjs/sheets-table": "^1.6.0",
+    "@univerjs/sheets-ui": "^1.6.0",
+    "@univerjs/ui": "^1.6.0",
+    "@univerkit/unit-comparison-viewer": "workspace:*",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.10"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

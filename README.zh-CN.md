@@ -17,14 +17,14 @@ univerkit 是一组基于 Univer 的开源应用组件，提炼自实际应用�
 - [`@univerkit/binding-engine`](./packages/binding-engine/README.zh-CN.md)
 - [`@univerkit/html-view`](./packages/html-view/README.zh-CN.md)
 - [`@univerkit/html-view-renderer`](./packages/html-view-renderer/README.zh-CN.md)
+- 示例：[`html-data-binding-basic`](./examples/html-data-binding-basic/README.zh-CN.md)
 
 ### 比较视图
 
 以只读双栏形式比较 Sheet、Doc、Slide、Base 和 Board 的两个版本，并标出差异。
 
-- `@univerkit/unit-comparison-viewer`
-
-比较视图正在迁入，迁入后补上文档链接。
+- [`@univerkit/unit-comparison-viewer`](./packages/unit-comparison-viewer/README.zh-CN.md)
+- 示例：[`unit-comparison-viewer-basic`](./examples/unit-comparison-viewer-basic/README.zh-CN.md)
 
 ## 使用方式
 
