@@ -1,103 +1,87 @@
 import { expect, it } from "vitest";
-import { parseCellReference, parseHtmlView, getHtmlViewUnitIds } from "../src/index.js";
+import { parseHtmlView } from "@univerkit/html-view-parser";
+import { createHtmlViewDocument } from "../src/host/document.js";
 
-it("parses encoded IDs, normalizes A1 and groups multiple Units", () => {
-  expect(parseCellReference("a%3Ab%25:s%3A1:aa7")).toEqual({
-    unitId: "a:b%",
-    sheetId: "s:1",
-    row: 6,
-    col: 26,
+it("installs the runtime and network policy before any author script", () => {
+  const html = createHtmlViewDocument({
+    template: parseHtmlView('<head class="custom"><script>author()</script></head>'),
+    runtime: "bootstrap()",
+    connectionId: "page-1",
   });
-  const view = parseHtmlView(
-    '<p data-univer-cell-text="u:s:A1"></p><input type="number" data-univer-cell-model="u:s:A1"><p data-univer-cell-text="v:s:B2"></p>',
-  );
-  expect(getHtmlViewUnitIds(view)).toEqual(["u", "v"]);
-  expect(view.bindings.map((b) => b.kind)).toEqual(["text", "model", "text"]);
-  expect(view.html).toContain('data-univer-binding="2"');
+  expect(html.indexOf("Content-Security-Policy")).toBeLessThan(html.indexOf("bootstrap()"));
+  expect(html.indexOf("bootstrap()")).toBeLessThan(html.indexOf("author()"));
+  expect(html).toContain("script-src 'unsafe-inline'");
+  expect(html).toContain("connect-src 'none'");
 });
-it.each(["a:b", "a:b:A0", "a:b:A1:B2", "a:b:A1+1", "a:b:$A$1", "%:b:A1", ":b:A1"])(
-  "rejects invalid references: %s",
-  (value) => {
-    expect(() => parseCellReference(value)).toThrow();
-  },
-);
-it("reports the element and attribute and rejects incompatible bindings", () => {
-  expect(() => parseHtmlView('<div data-univer-cell-model="u:s:A1"></div>')).toThrow(
-    "cell-model requires",
-  );
-  expect(() => parseHtmlView('<input type="file" data-univer-cell-model="u:s:A1">')).toThrow(
-    "input type",
-  );
-  expect(() => parseHtmlView('<select multiple data-univer-cell-model="u:s:A1"></select>')).toThrow(
-    "single select",
-  );
-  expect(() => parseHtmlView('<p data-univer-cell-text="bad"></p>')).toThrow(
-    "<p> at line 1: data-univer-cell-text",
-  );
-  expect(() =>
-    parseHtmlView(
-      '<p data-univer-cell-text="u:s:A1"><span data-univer-cell-text="u:s:A2"></span></p>',
-    ),
-  ).toThrow("contain another");
-});
-it("preserves HTML, CSS, JavaScript and custom attributes", () => {
-  const source =
-    '<style>.x{color:red}</style><script>window.loaded=true</script><div onclick="run()" data-custom="yes" data-univer-binding="99" data-univer-cell-text="u:s:A1"></div>';
-  const view = parseHtmlView(source);
-  expect(view.html).toContain("<script>window.loaded=true</script>");
-  expect(view.html).toContain('onclick="run()"');
-  expect(view.html).toContain('data-custom="yes"');
-  expect(view.html).not.toContain('binding="99"');
-  expect(view.html).toContain("<style>.x{color:red}</style>");
-});
-it("accepts JavaScript-only pages and does not impose resource budgets", () => {
-  expect(parseHtmlView("<script>window.univerBinding.getCellState(ref)</script>").bindings).toEqual(
-    [],
-  );
-  const large = "<p>" + "x".repeat(1024 * 1024) + "</p>";
-  const many = '<span data-univer-cell-text="u:s:A1"></span>'.repeat(101);
-  expect(parseHtmlView(large + many).bindings).toHaveLength(101);
-});
-it("preserves native form constraints and case-insensitive input types", () => {
-  const view = parseHtmlView(
-    '<input type="NUMBER" required min="0" data-univer-cell-model="u:s:A1">',
-  );
-  expect(view.html).toContain("required");
-});
-it("rejects text bindings on void elements that cannot display a value", () => {
-  expect(() => parseHtmlView('<br data-univer-cell-text="u:s:A1">')).toThrow("content element");
-});
-
-it("parses existing attributes alongside new subscriptions, encoded ranges and mixed Units", () => {
-  const view = parseHtmlView(
-    `<span data-univer-cell-text="u:s:A1"></span><input data-univer-cell-model="u:s:A2"><div id="cell" data-univer-cell-subscribe="u:s:B2"></div><div id="rows" data-univer-range-subscribe="v%3A1:t%25:aa2:ab5"></div>`,
-  );
-  expect(view.bindings.map((binding) => binding.kind)).toEqual(["text", "model", "cell", "range"]);
-  expect(view.bindings[3]!.reference).toEqual({
-    unitId: "v:1",
-    sheetId: "t%",
-    range: { startRow: 1, endRow: 4, startColumn: 26, endColumn: 27 },
+it("allows only explicit HTTP(S) origins and escapes script end tags", () => {
+  const template = parseHtmlView("hello");
+  const html = createHtmlViewDocument({
+    template,
+    runtime: 'const text="</script>";',
+    connectionId: '"<>',
+    allowedOrigins: ["https://assets.example.com"],
   });
-  expect(getHtmlViewUnitIds(view)).toEqual(["u", "v:1"]);
+  expect(html).toContain("connect-src https://assets.example.com;");
+  expect(html).toContain("form-action 'none';");
+  expect(html).toContain("<\\/script>");
+  expect(html).toContain("&quot;&lt;>");
+  for (const source of [
+    "https://example.com/path",
+    "https://user:pass@example.com",
+    "data:",
+    "https://example.com?q=x",
+    "https://example.com#x",
+  ]) {
+    expect(() =>
+      createHtmlViewDocument({
+        template,
+        runtime: "",
+        connectionId: "x",
+        allowedOrigins: [source],
+      }),
+    ).toThrow();
+  }
 });
-it.each(["u:s:B2:A3", "u:s:A3:B2", "u:s:A1", "u:s:A0:B1", "u:s:A1:B2:C3", "%:s:A1:B2"])(
-  "rejects invalid range %s",
-  (ref) => {
-    expect(() => parseHtmlView(`<div data-univer-range-subscribe="${ref}"></div>`)).toThrow();
-  },
-);
-it("rejects mixed bindings and data nested inside text", () => {
-  expect(() =>
-    parseHtmlView(
-      '<div data-univer-cell-subscribe="u:s:A1" data-univer-range-subscribe="u:s:A1:B2"></div>',
-    ),
-  ).toThrow("one binding");
-  expect(() =>
-    parseHtmlView('<div data-univer-cell-subscribe="u:s:A1" data-univer-cell-text="u:s:A1"></div>'),
-  ).toThrow("one binding");
-  expect(() =>
-    parseHtmlView(
-      '<div data-univer-cell-text="u:s:A1"><div data-univer-range-subscribe="u:s:A1:B2"></div></div>',
-    ),
-  ).toThrow("contain another");
+it("allows media sources only for image and media loads", () => {
+  const template = parseHtmlView("<video></video>");
+  const html = createHtmlViewDocument({
+    template,
+    runtime: "",
+    connectionId: "x",
+    allowedOrigins: ["https://cdn.example.com"],
+    mediaSources: [
+      "https://app.example.com/api/blobs/",
+      "https://app.example.com/api/blobs/",
+      "https://media.example.com",
+    ],
+  });
+  const media =
+    "https://cdn.example.com https://app.example.com/api/blobs/ https://media.example.com/";
+  expect(html).toContain(`img-src data: blob: ${media};`);
+  expect(html).toContain(`media-src data: blob: ${media};`);
+  expect(html).toContain("connect-src https://cdn.example.com;");
+  expect(html).toContain("frame-src https://cdn.example.com;");
+  expect(html).toContain("default-src https://cdn.example.com;");
+  expect(html).not.toMatch(/(?:script|connect|frame|worker|default)-src[^;]*app\.example\.com/);
+  const offline = createHtmlViewDocument({
+    template,
+    runtime: "",
+    connectionId: "x",
+    mediaSources: ["https://app.example.com/a/"],
+  });
+  expect(offline).toContain("connect-src 'none';");
+  expect(offline).toContain("media-src data: blob: https://app.example.com/a/;");
+  for (const source of [
+    "data:",
+    "ftp://example.com/a/",
+    "https://user:pass@example.com/a/",
+    "https://example.com/a/?q=x",
+    "https://example.com/a/#x",
+    "https://example.com/a;b/",
+    "https://example.com/a,b/",
+  ]) {
+    expect(() =>
+      createHtmlViewDocument({ template, runtime: "", connectionId: "x", mediaSources: [source] }),
+    ).toThrow();
+  }
 });

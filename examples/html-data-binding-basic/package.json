@@ -35,7 +35,7 @@
     "@univerjs/protocol": "^1.6.0",
     "@univerkit/binding-engine": "workspace:*",
     "@univerkit/html-view": "workspace:*",
-    "@univerkit/html-view-renderer": "workspace:*",
+    "@univerkit/html-view-parser": "workspace:*",
     "express": "^5.1.0",
     "langchain": "1.5.11",
     "libsql": "^0.5.29",

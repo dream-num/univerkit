@@ -1,23 +1,13 @@
-export {
-  parseCellBinding,
-  bindingAttributes,
-  bindingSelector,
-  textBindingSelector,
-} from "./binding.js";
-export { parseHtmlView } from "./parse.js";
-export {
-  parseCellReference,
-  parseRangeReference,
-  cellReferenceKey,
-  getHtmlViewUnitIds,
-} from "./reference.js";
+export { mountHtmlView } from "./iframe/dom.js";
+export { createBindingHost } from "./host/binding-host.js";
+export { createHtmlViewDocument } from "./host/document.js";
 export type {
-  HtmlCellReference,
+  BindingEngineClient,
+  BindingDataClient,
+  ElementBindingClient,
   HtmlRangeReference,
-  HtmlBindingDeclaration,
-  HtmlViewBinding,
-  HtmlViewDocument,
-} from "./types.js";
-export function isHtmlViewFilename(filename: string): boolean {
-  return /\.univer\.html$/i.test(filename);
-}
+  HtmlInsertRowsWithValuesParams,
+} from "./shared/client-types.js";
+
+export { bindingAddress } from "./shared/inspection.js";
+export type { InspectedBinding } from "./shared/inspection.js";

@@ -1,5 +1,5 @@
 import { BindingEngine } from "@univerkit/binding-engine";
-import { renderHtmlView } from "@univerkit/html-view-renderer/render";
+import { renderHtmlView } from "@univerkit/html-view/render";
 import type { CollaborationStatus } from "@univerjs-pro/collaboration-client";
 import { getFile } from "../api/files.js";
 import { collaborationConfig } from "../config.js";

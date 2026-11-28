@@ -60,7 +60,7 @@ Click **Bindings** to open the inspection sidebar. The SDK provides the sidebar,
 popovers; the application supplies only names. The Sheet name comes from `GET /api/files/:id`, and
 sheet names come directly from the Binding Engine the page has loaded (`getSheets()`). The wiring is
 in [web/views/html.ts](web/views/html.ts); see
-[built-in inspector and interface boundaries](../../packages/html-view-renderer/docs/binding-inspection.md)
+[built-in inspector and interface boundaries](../../packages/html-view/docs/binding-inspection.md)
 for the API.
 
 The inspector is in English by default. Open `/?file=demo-budget-view&lang=zh-CN` for the Chinese

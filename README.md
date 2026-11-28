@@ -14,20 +14,20 @@ the [Univer Office SDK](https://github.com/dream-num/univer) in your project as 
 Connect plain HTML, CSS, and JavaScript pages to Univer sheet data. Pages show cells and bind form
 controls through HTML attributes, or read, write, and subscribe to cells from scripts; Univer handles
 data sync and formula calculation. To render pages in an application, start with
-`@univerkit/html-view-renderer`.
+`@univerkit/html-view`.
 
 - [`@univerkit/binding-engine`](./packages/binding-engine/README.md)
+- [`@univerkit/html-view-parser`](./packages/html-view-parser/README.md)
 - [`@univerkit/html-view`](./packages/html-view/README.md)
-- [`@univerkit/html-view-renderer`](./packages/html-view-renderer/README.md)
 - Example: [`html-data-binding-basic`](./examples/html-data-binding-basic/README.md)
 
-### Comparison viewer
+### Diff viewer
 
 Compare two versions of a Sheet, Doc, Slide, Base, or Board side by side, read-only, with the
 differences highlighted.
 
-- [`@univerkit/unit-comparison-viewer`](./packages/unit-comparison-viewer/README.md)
-- Example: [`unit-comparison-viewer-basic`](./examples/unit-comparison-viewer-basic/README.md)
+- [`@univerkit/diff-viewer`](./packages/diff-viewer/README.md)
+- Example: [`diff-viewer-basic`](./examples/diff-viewer-basic/README.md)
 
 ## Usage
 

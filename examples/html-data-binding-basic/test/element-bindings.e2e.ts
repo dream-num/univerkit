@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import type { BindingEngineClient } from "@univerkit/html-view-renderer";
+import type { BindingEngineClient } from "@univerkit/html-view";
 
 test("ById with existing text/model attributes: insertion, retargeting and writes", async ({
   page,

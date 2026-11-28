@@ -53,7 +53,7 @@ File Endpoint，再创建 Exchange 导入任务并轮询结果；完成后新 Sh
 点击 **Bindings** 打开检查侧栏。侧栏、高亮与浮层由 SDK 内置，应用只提供名称：Sheet 名称来自
 `GET /api/files/:id`，子表名直接从页面已加载的 Binding Engine 读取（`getSheets()`）。接入代码位于
 [web/views/html.ts](web/views/html.ts)，接口说明见
-[内置 Inspector 与接口边界](../../packages/html-view-renderer/docs/binding-inspection.zh-CN.md)。
+[内置 Inspector 与接口边界](../../packages/html-view/docs/binding-inspection.zh-CN.md)。
 
 检查组件默认使用英文。打开 `/?file=demo-budget-view&lang=zh-CN` 可查看中文侧栏和浮层；示例将查询参数传给
 `renderHtmlView({ locale })`，模板内容和应用导航不受影响。

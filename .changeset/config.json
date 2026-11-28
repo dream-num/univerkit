@@ -2,11 +2,8 @@
   "$schema": "https://unpkg.com/@changesets/config@4.0.1/schema.json",
   "baseBranch": "main",
   "access": "public",
-  "ignore": [
-    "@univerkit/example-html-data-binding-basic",
-    "@univerkit/example-unit-comparison-viewer-basic"
-  ],
-  "fixed": [["@univerkit/binding-engine", "@univerkit/html-view", "@univerkit/html-view-renderer"]],
+  "ignore": ["@univerkit/example-html-data-binding-basic", "@univerkit/example-diff-viewer-basic"],
+  "fixed": [["@univerkit/binding-engine", "@univerkit/html-view-parser", "@univerkit/html-view"]],
   "linked": [],
   "format": "auto",
   "updateInternalDependencies": "patch",

@@ -1,7 +1,7 @@
 {
   "name": "@univerkit/html-view",
   "version": "1.0.0-rc.1",
-  "description": "Declarative HTML cell binding syntax and parsing for Univer.",
+  "description": "Isolated HTML runtime and asynchronous Univer data binding client.",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -29,6 +29,26 @@
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
       }
+    },
+    "./dom": {
+      "import": {
+        "types": "./dist/dom.d.ts",
+        "default": "./dist/dom.js"
+      },
+      "require": {
+        "types": "./dist/dom.d.cts",
+        "default": "./dist/dom.cjs"
+      }
+    },
+    "./render": {
+      "import": {
+        "types": "./dist/render.d.ts",
+        "default": "./dist/render.js"
+      },
+      "require": {
+        "types": "./dist/render.d.cts",
+        "default": "./dist/render.cjs"
+      }
     }
   },
   "publishConfig": {
@@ -38,14 +58,18 @@
   "scripts": {
     "build": "pnpm run release:build",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "release:build": "node ../../scripts/package-build.mjs"
+    "test": "pnpm run build:iframe && node --test scripts/build.test.mjs && vitest run test/",
+    "release:build": "node scripts/build.mjs",
+    "build:iframe": "node scripts/build.mjs --iframe-only"
   },
   "dependencies": {
-    "parse5": "8.0.0"
+    "@univerkit/binding-engine": "workspace:*",
+    "@univerkit/html-view-parser": "workspace:*"
   },
   "devDependencies": {
+    "jsdom": "^26.1.0",
     "typescript": "^5.9.3",
+    "vite": "^8.0.0",
     "vitest": "^4.1.10"
   }
 }

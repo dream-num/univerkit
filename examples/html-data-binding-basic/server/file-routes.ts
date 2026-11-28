@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import express, { type Router } from "express";
-import { parseHtmlView } from "@univerkit/html-view";
+import { parseHtmlView } from "@univerkit/html-view-parser";
 import type { FileCatalog } from "./file-catalog.js";
 import { createHtmlSource, createSheetData } from "./templates.js";
 

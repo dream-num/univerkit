@@ -7,7 +7,7 @@ import {
   DEFAULT_WORKSHEET_COLUMN_COUNT,
   type IWorkbookData,
 } from "@univerjs/core";
-import { parseCellReference, parseHtmlView } from "@univerkit/html-view";
+import { parseCellReference, parseHtmlView } from "@univerkit/html-view-parser";
 import type { AiEvent } from "../shared/ai.js";
 
 export function createAiModel(apiKey: string) {

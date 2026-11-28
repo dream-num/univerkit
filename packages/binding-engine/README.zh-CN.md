@@ -4,7 +4,7 @@
 
 `@univerkit/binding-engine` 无需表格 UI 即可加载协同工作簿。浏览器或 Node.js 宿主可以读取单元格和范围、订阅变化、写入标量、插行并等待服务端确认。每个 Engine 绑定一个 Sheet Unit，并拥有一个独立的 Headless Univer 实例。
 
-HTML 数据绑定的整体设计和三个包的分工见[HTML 数据绑定概览](../html-view-renderer/docs/overview.zh-CN.md)。
+HTML 数据绑定的整体设计和三个包的分工见[HTML 数据绑定概览](../html-view/docs/overview.zh-CN.md)。
 
 ## 职责与所有权
 
@@ -57,7 +57,7 @@ flowchart LR
     end
 ```
 
-浏览器部署由本地宿主调用 Engine，HTML View Renderer 提供 iframe 页面与宿主之间的消息通信。Node.js 部署将 Engine 放在服务端，应用自行提供浏览器到宿主的鉴权传输，并选择适合 Node 的 SDK socket service。两种方案中的每个 Engine 都拥有独立的 Headless Univer 实例。
+浏览器部署由本地宿主调用 Engine，`@univerkit/html-view` 提供 iframe 页面与宿主之间的消息通信。Node.js 部署将 Engine 放在服务端，应用自行提供浏览器到宿主的鉴权传输，并选择适合 Node 的 SDK socket service。两种方案中的每个 Engine 都拥有独立的 Headless Univer 实例。
 
 分组表示部署位置，不要求 Engine 与协同服务处于同一进程；服务端部署时，协同服务也可以位于另一台服务器。下方示例演示浏览器宿主，上面的服务器部署图不代表本包内置了远程访问服务。
 
@@ -357,7 +357,7 @@ Engine 按单元格坐标或完整范围共享状态读取，同一订阅目标�
 
 ## 排错
 
-加载失败时，在浏览器开发者工具检查稳定 Unit ID、登录会话、HTTP 接口以及 WebSocket/session-ticket 请求。读取 `null` 除了空单元格，也可能意味着 Sheet ID 或坐标错误。公式形状的字符串按字面保存是预期行为，此接口写入标量。本地写入后 `flush()` 失败不代表保存成功。需要 iframe 渲染时安装 `@univerkit/html-view-renderer`，阅读其包内 README 和 `docs/integration.zh-CN.md`。
+加载失败时，在浏览器开发者工具检查稳定 Unit ID、登录会话、HTTP 接口以及 WebSocket/session-ticket 请求。读取 `null` 除了空单元格，也可能意味着 Sheet ID 或坐标错误。公式形状的字符串按字面保存是预期行为，此接口写入标量。本地写入后 `flush()` 失败不代表保存成功。需要 iframe 渲染时安装 `@univerkit/html-view`，阅读其包内 README 和 `docs/integration.zh-CN.md`。
 
 ## 本地验证
 

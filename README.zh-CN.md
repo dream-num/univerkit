@@ -12,19 +12,19 @@ univerkit 是一组基于 Univer 的开源应用组件，提炼自实际应用�
 
 把普通 HTML、CSS、JavaScript 页面连接到 Univer 表格数据。页面通过 HTML 属性展示单元格、绑定表单控件，
 也可以用脚本读写单元格、订阅变化；数据同步与公式计算由 Univer 完成。在应用中渲染页面从
-`@univerkit/html-view-renderer` 开始。
+`@univerkit/html-view` 开始。
 
 - [`@univerkit/binding-engine`](./packages/binding-engine/README.zh-CN.md)
+- [`@univerkit/html-view-parser`](./packages/html-view-parser/README.zh-CN.md)
 - [`@univerkit/html-view`](./packages/html-view/README.zh-CN.md)
-- [`@univerkit/html-view-renderer`](./packages/html-view-renderer/README.zh-CN.md)
 - 示例：[`html-data-binding-basic`](./examples/html-data-binding-basic/README.zh-CN.md)
 
-### 比较视图
+### 差异视图
 
 以只读双栏形式比较 Sheet、Doc、Slide、Base 和 Board 的两个版本，并标出差异。
 
-- [`@univerkit/unit-comparison-viewer`](./packages/unit-comparison-viewer/README.zh-CN.md)
-- 示例：[`unit-comparison-viewer-basic`](./examples/unit-comparison-viewer-basic/README.zh-CN.md)
+- [`@univerkit/diff-viewer`](./packages/diff-viewer/README.zh-CN.md)
+- 示例：[`diff-viewer-basic`](./examples/diff-viewer-basic/README.zh-CN.md)
 
 ## 使用方式
 

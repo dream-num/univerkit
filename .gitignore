@@ -10,4 +10,4 @@ test-results/
 playwright-report/
 
 # Build intermediates
-packages/html-view-renderer/.generated/
+packages/html-view/.generated/

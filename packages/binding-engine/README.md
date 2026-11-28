@@ -4,7 +4,7 @@
 
 `@univerkit/binding-engine` loads a collaborative workbook without a spreadsheet UI. A browser or Node.js host can read cells and ranges, subscribe to changes, write scalar values, insert rows, and wait for server acknowledgement. Each engine owns one Sheet Unit and one independent Headless Univer instance.
 
-For the overall design of HTML data binding and how the three packages divide the work, see the [HTML data binding overview](../html-view-renderer/docs/overview.zh-CN.md) (Simplified Chinese).
+For the overall design of HTML data binding and how the three packages divide the work, see the [HTML data binding overview](../html-view/docs/overview.zh-CN.md) (Simplified Chinese).
 
 ## Responsibilities and ownership
 
@@ -57,7 +57,7 @@ flowchart LR
     end
 ```
 
-In a browser deployment the local host calls Engine, and HTML View Renderer provides messaging between the iframe page and host. In a Node.js deployment Engine runs server-side; the application supplies authenticated browser-to-host transport and selects an SDK socket service suitable for Node. Each engine in either option owns an independent Headless Univer instance.
+In a browser deployment the local host calls Engine, and `@univerkit/html-view` provides messaging between the iframe page and host. In a Node.js deployment Engine runs server-side; the application supplies authenticated browser-to-host transport and selects an SDK socket service suitable for Node. Each engine in either option owns an independent Headless Univer instance.
 
 Groups represent deployment locations, not a requirement to run Engine and the collaboration service in the same process. In a server deployment the collaboration service can also run on another server. The example below demonstrates a browser host; the server deployment diagram does not imply that this package includes a remote access service.
 
@@ -354,7 +354,7 @@ Do not add unrelated UI services to Headless Engine to satisfy UI Facade listene
 
 ## Troubleshooting
 
-If loading fails, verify the stable Unit ID, logged-in session, HTTP endpoints and WebSocket/session-ticket requests in browser developer tools. A `null` read can mean a wrong Sheet ID or coordinate as well as an empty cell. A literal string that looks like a formula is expected; this API writes scalars. A local write followed by a failed `flush()` is not a successful save. For iframe rendering install `@univerkit/html-view-renderer` and read its bundled README and `docs/integration.md`.
+If loading fails, verify the stable Unit ID, logged-in session, HTTP endpoints and WebSocket/session-ticket requests in browser developer tools. A `null` read can mean a wrong Sheet ID or coordinate as well as an empty cell. A literal string that looks like a formula is expected; this API writes scalars. A local write followed by a failed `flush()` is not a successful save. For iframe rendering install `@univerkit/html-view` and read its bundled README and `docs/integration.md`.
 
 ## Local validation
 

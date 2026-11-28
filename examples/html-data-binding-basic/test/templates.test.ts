@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { parseCellReference, parseRangeReference, parseHtmlView } from "@univerkit/html-view";
+import {
+  parseCellReference,
+  parseRangeReference,
+  parseHtmlView,
+} from "@univerkit/html-view-parser";
 import { createHtmlSource } from "../server/templates.js";
 import { createSalesHtmlSource } from "../server/sales-template.js";
 import { createEventHtmlSource, eventViews } from "../server/event-template.js";
